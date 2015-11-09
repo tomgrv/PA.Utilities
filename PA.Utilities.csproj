@@ -45,7 +45,6 @@
   <Import Project="..\packages\GitVersionTask.2.0.1\Build\GitVersionTask.targets" Condition="Exists('..\packages\GitVersionTask.2.0.1\Build\GitVersionTask.targets')" />
   <ItemGroup>
     <None Include="PA.Toolbox.snk" />
-    <None Include="GitVersionConfig.yaml" />
     <None Include="packages.config" />
   </ItemGroup>
 </Project>
