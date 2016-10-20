@@ -31,6 +31,12 @@ Global
 		{F2C9256B-A6C1-4FAF-8DF0-3A15092F50B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F2C9256B-A6C1-4FAF-8DF0-3A15092F50B7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		UpdateAssemblyVersion = True
+		UpdateAssemblyFileVersion = False
+		UpdateAssemblyInfoVersion = False
+		AssemblyVersionSettings = IncrementOnDemandWithReset.IncrementOnDemandWithReset.DeltaDayStamp.TimeStamp
+	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		Policies = $0
 		$0.DotNetNamingPolicy = $1
