@@ -9,138 +9,176 @@ using System.Linq;
 using System.Diagnostics;
 using System.IO;
 using GitVersion;
+using Microsoft.Build.Framework.XamlTypes;
 
 namespace PA.Utilities.InnoSetupTask.InnoSetup
 {
-    public class Script
+    public class ScriptProcessor
     {
         public string ScriptName { get; set; }
 
-        public bool WithDefine { get; private set; }
+        public string Output { get; set; }
+
+        public string AppName { get; private set; }
+        public string AppNamePascalCase { get; private set; }
+        public string AppVersion { get; private set; }
+        public string AppGeneration { get; private set; }
+        public string AppDescription { get; private set; }
+        public string AppCompany { get; private set; }
+        public string AppCopyright { get; private set; }
+        public string AppInfoVersion { get; private set; }
+        public string AppInfoSemVer { get; private set; }
+        public string AppProduct { get; private set; }
+        public string OutputBaseFilename { get; private set; }
+
+        public struct ScriptData
+        {
+            public bool isSetup;
+            public string data;
+        }
+
+        public IDictionary<string, ScriptData> Defined;
+
+        public Assembly Assembly { get; private set; }
 
         private readonly ScriptParser parser = new ScriptParser();
 
-        public Script(string filename)
+        public ScriptProcessor(string filename, Assembly a)
         {
             Trace.TraceInformation("Using <" + filename + ">");
             this.ScriptName = filename;
-        }
+            this.Assembly = a;
+            this.Defined = new Dictionary<string, ScriptData>();
 
-        internal void UpdateDefine()
-        {
-            var iss = this.parser.ReadFile(this.ScriptName);
-
-            var appname = GetAttribute<AssemblyTitleAttribute>(t => t.Title);
-            var version = GetAttribute<AssemblyInformationalVersionAttribute>(t => t.InformationalVersion);
-
-            if (appname.Length > 0 && version.Length > 0)
-            {
-
-                this.UpdateDefine(iss.Global, "AppName", appname);
-                this.UpdateDefine(iss.Global, "AppNamePascalCase", Regex.Replace(appname.ToPascalCase(), @"[^0-9a-zA-Z\._]", string.Empty));
-                this.UpdateDefine(iss.Global, "AppGeneration", GetAttribute<AssemblyFileVersionAttribute>(t => t.Version).Split('.').First());
-                this.UpdateDefine(iss.Global, "AppVersion", GetAttribute<AssemblyFileVersionAttribute>(t => t.Version));
-                this.UpdateDefine(iss.Global, "AppDescription", GetAttribute<AssemblyDescriptionAttribute>(t => t.Description));
-                this.UpdateDefine(iss.Global, "AppCompany", GetAttribute<AssemblyCompanyAttribute>(t => t.Company));
-                this.UpdateDefine(iss.Global, "AppCopyright", GetAttribute<AssemblyCopyrightAttribute>(t => t.Copyright));
-                this.UpdateDefine(iss.Global, "AppInfoVersion", version);
-                this.UpdateDefine(iss.Global, "AppInfoSemVer", version.Substring(0, version.IndexOf('+') > 0 ? version.IndexOf('+') : version.Length - 1));
-                this.UpdateDefine(iss.Global, "AppProduct", GetAttribute<AssemblyProductAttribute>(t => t.Product));
-
-                this.parser.WriteFile(this.ScriptName, iss);
-
-                this.WithDefine = true;
-            }
-        }
-
-        private void UpdateDefine(KeyDataCollection keys, string key, string value)
-        {
-            KeyData data = keys.FirstOrDefault(kd => Regex.Match(kd.KeyName, @"#(\w+\s){2}").Groups[1].Value.Trim() == key.Trim());
-
-            if (data == null)
-            {
-                keys.AddKey("#define " + key + " \"" + value + "\"");
-            }
-            else
-            {
-                data.KeyName = Regex.Match(data.KeyName, @"#(\w+\s){2}").Value + "\"" + value + "\"";
-            }
-        }
-
-        internal void UpdateSetup()
-        {
-            var iss = this.parser.ReadFile(this.ScriptName);
-
-            if (!iss.Sections.ContainsSection("Setup"))
-            {
-                iss.Sections.AddSection("Setup");
-            }
-
-            var section = iss.Sections["Setup"];
-
-            if (this.WithDefine)
-            {
-                section["AppName"] = "{#AppName}";
-                section["AppVersion"] = "{#AppVersion}";
-                section["AppComments"] = "{#AppDescription}";
-                section["AppPublisher"] = "{#AppCompany}";
-                section["AppCopyright"] = "{#AppCopyright}";
-                section["VersionInfoVersion"] = "{#AppVersion}";
-                section["VersionInfoCompany"] = "{#AppCompany}";
-                section["VersionInfoProductName"] = "{#AppProduct}";
-                section["VersionInfoDescription"] = "{#AppDescription}";
-                section["VersionInfoTextVersion"] = "{#AppInfoVersion}";
-                section["OutputBaseFilename"] = "Setup_{#AppNamePascalCase}.{#AppInfoSemVer}";
-            }
-            else
-            {
-                section["AppName"] = GetAttribute<AssemblyTitleAttribute>(t => t.Title);
-                section["AppVersion"] = GetAttribute<AssemblyFileVersionAttribute>(t => t.Version);
-                section["AppComments"] = GetAttribute<AssemblyDescriptionAttribute>(t => t.Description);
-                section["AppPublisher"] = GetAttribute<AssemblyCompanyAttribute>(t => t.Company);
-                section["AppCopyright"] = GetAttribute<AssemblyCopyrightAttribute>(t => t.Copyright);
-                section["VersionInfoVersion"] = GetAttribute<AssemblyFileVersionAttribute>(t => t.Version);
-                section["VersionInfoCompany"] = GetAttribute<AssemblyCompanyAttribute>(t => t.Company);
-                section["VersionInfoProductName"] = GetAttribute<AssemblyTitleAttribute>(t => t.Title);
-                section["VersionInfoDescription"] = GetAttribute<AssemblyDescriptionAttribute>(t => t.Description);
-                section["VersionInfoTextVersion"] = GetAttribute<AssemblyInformationalVersionAttribute>(t => t.InformationalVersion);
-                section["OutputBaseFilename"] = "Setup_" + GetAttribute<AssemblyTitleAttribute>(t => t.Title).ToPascalCase() + "." + GetAttribute<AssemblyFileVersionAttribute>(t => t.Version);
-            }
-
-            this.parser.WriteFile(this.ScriptName, iss);
+            this.AppName = this.InitKeys("AppName", GetAttribute<AssemblyTitleAttribute>(t => t.Title));
+            this.AppNamePascalCase = this.InitKeys("AppNamePascalCase", Regex.Replace(this.AppName.ToPascalCase(), @"[^0-9a-zA-Z\._]", string.Empty), false);
+            this.AppVersion = this.InitKeys("AppVersion", GetAttribute<AssemblyFileVersionAttribute>(t => t.Version));
+            this.AppInfoVersion = this.InitKeys("VersionInfoVersion", GetAttribute<AssemblyInformationalVersionAttribute>(t => t.InformationalVersion), false);
+            this.AppGeneration = this.InitKeys("AppGeneration", this.AppVersion.Split('.').First(), false);
+            this.AppDescription = this.InitKeys("VersionInfoDescription", GetAttribute<AssemblyDescriptionAttribute>(t => t.Description));
+            this.AppCompany = this.InitKeys("VersionInfoCompany", GetAttribute<AssemblyCompanyAttribute>(t => t.Company));
+            this.AppCopyright = this.InitKeys("VersionInfoCopyright", GetAttribute<AssemblyCopyrightAttribute>(t => t.Copyright));
+            this.AppInfoSemVer = this.InitKeys("VersionInfoTextVersion", this.AppInfoVersion.Substring(0, this.AppInfoVersion.IndexOf('+') > 0 ? this.AppInfoVersion.IndexOf('+') : this.AppInfoVersion.Length - 1));
+            this.AppProduct = this.InitKeys("VersionInfoProductName", GetAttribute<AssemblyProductAttribute>(t => t.Product));
+            this.OutputBaseFilename = this.InitKeys("OutputBaseFilename", "Setup_" + this.AppNamePascalCase + "." + this.AppInfoSemVer);
         }
 
         private string GetAttribute<T>(Func<T, string> getField, string defValue = "")
             where T : Attribute
         {
-            var attribute = Assembly.GetEntryAssembly().GetCustomAttribute<T>();
-            return attribute != null ? getField(attribute) : defValue;
-        }
 
-        internal void UpdateFile(IEnumerable<FileItem> list)
-        {
-            var iss = this.parser.ReadFile(this.ScriptName);
+            var attributesdata = (Assembly == null ? Assembly.GetEntryAssembly().GetCustomAttributesData() : Assembly.GetCustomAttributesData()).FirstOrDefault(a => a.AttributeType == typeof(T));
 
-            if (!iss.Sections.ContainsSection("Files"))
+            if (attributesdata != null)
             {
-                iss.Sections.AddSection("Files");
+                var attribute = (T)Activator.CreateInstance(typeof(T), attributesdata.ConstructorArguments.Select(a => a.Value).ToArray());
+
+                if (attribute != null)
+                {
+                    return getField(attribute);
+                }
             }
 
-            var section = iss.Sections["Files"];
-
-            section.RemoveAllKeys();
-
-            foreach (var i in FileItem.OptimizeFileItems(list))
-            {
-                section.AddKey(i.ToString(), "");
-            }
-
-            this.parser.WriteFile(this.ScriptName, iss);
+            return typeof(T).Name;
         }
 
-        internal void UpdateCode(IEnumerable<FileInfo> list)
+        private string InitKeys(string[] key, string value, bool isSetup = true)
         {
-            if (list.Count() > 0)
+            foreach (var k in key)
+            {
+                InitKeys(k, value, isSetup);
+            }
+
+            return value;
+        }
+
+        private string InitKeys(string key, string value, bool isSetup = true)
+        {
+            if (this.Defined.ContainsKey(key))
+            {
+                this.Defined[key] = new ScriptData() { data = value, isSetup = isSetup };
+            }
+            else
+            {
+                this.Defined.Add(key, new ScriptData() { data = value, isSetup = isSetup });
+            }
+
+            return value;
+        }
+
+        internal void UpdateDefine()
+        {
+            if (File.Exists(this.ScriptName))
+            {
+                var iss = this.parser.ReadFile(this.ScriptName);
+
+                foreach (var key in this.Defined.Keys)
+                {
+                    KeyData data = iss.Global.FirstOrDefault(kd => Regex.Match(kd.KeyName, @"#(\w+\s){2}").Groups[1].Value.Trim() == key.Trim());
+
+                    if (data == null)
+                    {
+                        iss.Global.AddKey("#define " + key + " \"" + this.Defined[key].data + "\"");
+                    }
+                    else
+                    {
+                        data.KeyName = Regex.Match(data.KeyName, @"#(\w+\s){2}").Value + "\"" + this.Defined[key].data + "\"";
+                    }
+                }
+
+                this.parser.WriteFile(this.ScriptName, iss);
+            }
+        }
+
+        internal void UpdateSetup(bool withDefine = true)
+        {
+            if (File.Exists(this.ScriptName))
+            {
+                var iss = this.parser.ReadFile(this.ScriptName);
+
+                if (!iss.Sections.ContainsSection("Setup"))
+                {
+                    iss.Sections.AddSection("Setup");
+                }
+
+                var section = iss.Sections["Setup"];
+
+                foreach (var k in this.Defined.Where(e => e.Value.isSetup))
+                {
+                    section[k.Key] = withDefine ? ("{#" + k.Key + "}") : k.Value.data;
+                }
+
+                this.parser.WriteFile(this.ScriptName, iss);
+            }
+        }
+
+        internal void UpdateFile(FileItem[] list)
+        {
+            if (File.Exists(this.ScriptName) && list.Length > 0)
+            {
+                var iss = this.parser.ReadFile(this.ScriptName);
+
+                if (!iss.Sections.ContainsSection("Files"))
+                {
+                    iss.Sections.AddSection("Files");
+                }
+
+                var section = iss.Sections["Files"];
+
+                section.RemoveAllKeys();
+
+                foreach (var i in FileItem.OptimizeFileItems(list))
+                {
+                    section.AddKey(i.ToString(), "");
+                }
+
+                this.parser.WriteFile(this.ScriptName, iss);
+            }
+        }
+
+        internal void UpdateCode(FileInfo[] list)
+        {
+            if (File.Exists(this.ScriptName) && list.Length > 0)
             {
                 var iss = this.parser.ReadFile(this.ScriptName);
 
@@ -153,7 +191,7 @@ namespace PA.Utilities.InnoSetupTask.InnoSetup
 
                 foreach (var script in list)
                 {
-                    var code = section.FirstOrDefault(kd => kd.Value == script.Name);
+                    var code = section.FirstOrDefault(kd => Path.GetFileName(kd.Value) == Path.GetFileName(script.FullName));
 
                     if (code == null)
                     {

@@ -19,15 +19,17 @@ namespace PA.Utilities.InnoSetupTask.Microsoft
 
         public SolutionProcessor(string solution)
         {
-            var configuration = Assembly.GetEntryAssembly().GetCustomAttribute<AssemblyConfigurationAttribute>();
             this.Solution = new Solution(solution);
+        }
+
+        public void GetProject(string path)
+        {
+
         }
 
         public void Init()
         {
             var solution = new Solution(this.Solution.DirectoryName + Path.DirectorySeparatorChar + this.Solution.SolutionName);
-
-            Trace.TraceInformation("Processing solution <" + solution.SolutionName + ">");
 
             using (var pc = new ProjectCollection())
             {

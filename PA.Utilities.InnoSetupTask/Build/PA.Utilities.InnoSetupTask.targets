@@ -3,21 +3,62 @@
 	<PropertyGroup>
 		<SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">$(MSBuildProjectDirectory)\..\</SolutionDir>
 		<IntermediateOutputPath Condition="$(IntermediateOutputPath) == '' Or $(IntermediateOutputPath) == '*Undefined*'">$(MSBuildProjectDirectory)\obj\$(Configuration)\</IntermediateOutputPath>
-		<InnoSetupTaskPath Condition="$(InnoSetupTaskPath) == '' Or $(InnoSetupTaskPath) == '*Undefined*'">$(MSBuildThisFileDirectory)..\</InnoSetupTaskPath>
+		<ThisPackageDirectory Condition="$(ThisPackageDirectory) == '' Or $(ThisPackageDirectory) == '*Undefined*'">$(MSBuildThisFileDirectory)..</ThisPackageDirectory>
 	</PropertyGroup>
-	<UsingTask TaskName="InnoSetupTask.PreprocessInnoSetupScript" AssemblyFile="$(InnoSetupTaskPath)PA.Utilities.InnoSetupTask.dll" />
-	<UsingTask TaskName="InnoSetupTask.UpdateFileList" AssemblyFile="$(InnoSetupTaskPath)PA.Utilities.InnoSetupTask.dll" />
+	<PropertyGroup>
+		<InnoSetupCompilerVersion Condition="$(InnoSetupCompilerVersion) == '' Or $(InnoSetupCompilerVersion) == '*Undefined*'">5.5.9</InnoSetupCompilerVersion>
+	</PropertyGroup>
+	<UsingTask TaskName="InnoSetupTask.PreprocessInnoSetupScript" AssemblyFile="$(ThisPackageDirectory)\lib\PA.Utilities.InnoSetupTask.dll" />
 	<ItemGroup>
 		<InnoSetupScripts Include="*.iss" />
 	</ItemGroup>
 	<ItemGroup>
-		<InnoSetupExtraCode Include="$(InnoSetupTaskPath)**\*.iss" />
+		<InnoSetupExtraCode Include="$(ThisPackageDirectory)\**\*.iss" />
 	</ItemGroup>
+	<Target Name="BeforeBeforeBuild" BeforeTargets="BeforeBuild">
+		<HandleAssemblyResolve SearchPath="$(SolutionDir)packages" />
+	</Target>
+	<UsingTask TaskName="HandleAssemblyResolve" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll">
+		<ParameterGroup>
+			<SearchPath ParameterType="System.String" Required="true" />
+		</ParameterGroup>
+		<Task>
+			<Using Namespace="System" />
+			<Using Namespace="System.IO" />
+			<Using Namespace="System.Reflection" />
+			<Using Namespace="System.Collections.Generic" />
+			<Using Namespace="System.Linq" />
+			<Code Type="Fragment" Language="cs"><![CDATA[
+					Log.LogMessage("Handle dependencies from "+SearchPath, MessageImportance.High);  
+					AppDomain.CurrentDomain.AssemblyResolve += (sender, e) => 
+					{
+						var name = e.Name.Split(',')[0];
+						var list = Directory.EnumerateFiles(SearchPath, name+"*.dll", SearchOption.AllDirectories);
+
+						foreach(var asm in list)
+						{
+							try
+							{
+								if (File.Exists(asm)) return Assembly.LoadFrom(asm);
+							}
+							catch
+							{
+								Log.LogMessage("Cannot load "+asm, MessageImportance.High);  
+							}
+						}
+					
+						return null;
+					};
+				]]></Code>
+		</Task>
+	</UsingTask>
 	<Target Name="PreprocessInnoSetupScript" BeforeTargets="CoreCompile" Inputs="@(InnoSetupScripts)" Outputs="@(InnoSetupScripts-&gt;'$(MSBuildProjectDirectory)\$(IntermediateOutputPath)%(Filename)%(Extension)')">
 		<Message Importance="High" Text="Working in $(InnoSetupTaskPath)" />
-		<Message Importance="High" Text="Update following scripts: @(InnoSetupScripts)" />
-		<Message Importance="High" Text="Update following code: @(InnoSetupExtraCode)" />
+		<Message Importance="High" Text="Update scripts: @(InnoSetupScripts)" />
+		<Message Importance="High" Text="Include code: @(InnoSetupExtraCode)" />
 		<PreprocessInnoSetupScript ProjectFile="$(MSBuildProjectFullPath)" Scripts="@(InnoSetupScripts)" ExtraCode="@(InnoSetupExtraCode)" IntermediateOutputPath="$(IntermediateOutputPath)" DestinationFolder="$(OutputPath)" />
+	</Target>
+	<Target Name="CompileInnoSetupScript" DependsOnTargets="PreprocessInnoSetupScript">
 	</Target>
 	<Target Name="CleanInnoSetupScripts" AfterTargets="CoreClean">
 		<Message Importance="High" Text="Clean following scripts: @(InnoSetupScripts-&gt;'$(MSBuildProjectDirectory)\$(IntermediateOutputPath)%(Filename)%(Extension)')" />

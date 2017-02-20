@@ -7,6 +7,7 @@ namespace PA.Utilities.InnoSetupTask.InnoSetup
 {
     internal class FileItem
     {
+        public bool IsOutput { get; set; }
         public string Source { get; set; }
         public string Tasks { get; set; }
         public string Components { get; set; }
@@ -104,8 +105,9 @@ namespace PA.Utilities.InnoSetupTask.InnoSetup
             }
         }
 
-        public FileItem(string source, string dest, string component, string task)
+        public FileItem(string source, string dest, string component, string task, bool IsOutput = false)
         {
+            this.IsOutput = IsOutput;
             this.SetProperty("Source", source);
             this.SetProperty("DestDir", dest);
             this.SetProperty("Components", component);

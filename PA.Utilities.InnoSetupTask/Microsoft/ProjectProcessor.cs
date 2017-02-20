@@ -40,7 +40,21 @@ namespace PA.Utilities.InnoSetupTask.Microsoft
             using (ProjectCollection pc = new ProjectCollection())
             {
                 this.Project = pc.GetLoadedProjects(path).FirstOrDefault();
+
+                if (this.Project == null)
+                {
+                    this.Project = pc.LoadProject(path);
+                }
+
             }
+        }
+
+        public ProjectProcessor(string path, string config, string platform)
+           : this(path)
+        {
+            this.Project.SetProperty("Configuration", config);
+            this.Project.SetProperty("Platform", platform);
+            this.Project.ReevaluateIfNecessary();
         }
 
         public void Init()
@@ -74,11 +88,15 @@ namespace PA.Utilities.InnoSetupTask.Microsoft
             this.Project.Save();
         }
 
+        public string GetProjectTarget()
+        {
+            return this.GetProjectProperty("TargetPath");
+        }
 
-        private string GetProjectProperty(string name)
+        public string GetProjectProperty(string name)
         {
             name = name.ToLower();
-            var prop = this.Project.AllEvaluatedProperties.FirstOrDefault(p => p.Name.ToLower() == name);
+            var prop = this.Project?.AllEvaluatedProperties?.FirstOrDefault(p => p.Name.ToLower() == name);
             return prop != null ? prop.EvaluatedValue : "";
         }
 
@@ -99,7 +117,7 @@ namespace PA.Utilities.InnoSetupTask.Microsoft
 
         internal IEnumerable<FileItem> GetFiles(string configuration, string platform, string parentComponents = null, string parentDir = null, string parentTasks = null)
         {
-            var source = this.GetProjectProperty("TargetPath");
+            var source = this.GetProjectTarget();
 
             var config = this.GetProjectItems("None").FirstOrDefault(p => p.EvaluatedInclude == Setup);
 
@@ -134,7 +152,7 @@ namespace PA.Utilities.InnoSetupTask.Microsoft
                             yield return new FileItem(source,
                                 GetAttribute(node, "DestDir"),
                                 components,
-                                GetAttribute(node, "Tasks"));
+                                GetAttribute(node, "Tasks"), true);
 
                             if (System.IO.File.Exists(source + ".config"))
                             {
