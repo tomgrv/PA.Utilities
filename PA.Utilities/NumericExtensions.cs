@@ -1,15 +1,20 @@
-﻿using System;
+﻿﻿
+
+
+using System;
 
 namespace PA.Utilities
 {
-    public static class FloatUtilities
+    public static class NumericExtensions
     {
+
+
         public static bool NearlyEquals(this float a, float b)
         {
 
-            float absA = Math.Abs(a);
-            float absB = Math.Abs(b);
-            float diff = Math.Abs(a - b);
+            var absA = Math.Abs(a);
+            var absB = Math.Abs(b);
+            var diff = Math.Abs(a - b);
 
             if (a.CompareTo(b) == 0)
             { // shortcut, handles infinities
@@ -23,16 +28,16 @@ namespace PA.Utilities
             }
             else
             { // use relative error
-                return diff / Math.Min((absA + absB), float.MaxValue) < float.Epsilon;
+                return diff / Math.Min(absA + absB, float.MaxValue) < float.Epsilon;
             }
-        }
-
+        } 
+ 
         public static bool NearlyEquals(this double a, double b)
         {
 
-            double absA = Math.Abs(a);
-            double absB = Math.Abs(b);
-            double diff = Math.Abs(a - b);
+            var absA = Math.Abs(a);
+            var absB = Math.Abs(b);
+            var diff = Math.Abs(a - b);
 
             if (a.CompareTo(b) == 0)
             { // shortcut, handles infinities
@@ -46,9 +51,10 @@ namespace PA.Utilities
             }
             else
             { // use relative error
-                return diff / Math.Min((absA + absB), double.MaxValue) < float.Epsilon;
+                return diff / Math.Min(absA + absB, double.MaxValue) < double.Epsilon;
             }
-        }
+        } 
+   
     }
 }
 
