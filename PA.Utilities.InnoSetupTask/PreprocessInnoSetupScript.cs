@@ -21,7 +21,6 @@ namespace PA.Utilities.InnoSetupTask
         public PreprocessInnoSetupScript()
         {
             logger = new TaskLogger(this);
-            GitVersion.Logger.SetLoggers(logger.LogInfo, logger.LogWarning, s => logger.LogError(s));
 
             this.UpdateDefineSection = true;
             this.UpdateSetupSection = true;
@@ -77,7 +76,6 @@ namespace PA.Utilities.InnoSetupTask
             }
             finally
             {
-                GitVersion.Logger.Reset();
             }
         }
 

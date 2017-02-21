@@ -56,9 +56,6 @@
     <Reference Include="Microsoft.Build.Utilities.v4.0" />
     <Reference Include="Microsoft.Build.Tasks.v4.0" />
     <Reference Include="System.Core" />
-    <Reference Include="GitVersionCore">
-      <HintPath>..\packages\GitVersion.3.6.5\lib\Net45\GitVersionCore.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Build.Engine" />
   </ItemGroup>
   <ItemGroup>

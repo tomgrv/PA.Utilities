@@ -16,7 +16,7 @@
 	</metadata>
 	<files>
 		<!-- Include everything in \build -->
-		<file src="Build\$id$.targets" target="build" />
+		<file src="Build\$id$.targets" target="build\dotnet" />
 		<!-- Include ref for targets file -->
 		<file src="bin\$configuration$\$id$.dll" target="lib" />
 		<!-- ... -->

@@ -8,7 +8,7 @@ using System.Text.RegularExpressions;
 using System.Linq;
 using System.Diagnostics;
 using System.IO;
-using GitVersion;
+//using GitVersion;
 using Microsoft.Build.Framework.XamlTypes;
 
 namespace PA.Utilities.InnoSetupTask.InnoSetup
