@@ -27,8 +27,6 @@ namespace PA.Utilities.InnoSetupTask
             this.IncludeCodeSnippets = true;
         }
 
-        [Required]
-        public string DestinationFolder { get; set; }
 
         [Required]
         public string SolutionPath { get; set; }
@@ -93,7 +91,7 @@ namespace PA.Utilities.InnoSetupTask
                 var scriptsrc = Path.GetDirectoryName(ProjectPath) + Path.DirectorySeparatorChar + script;
                 logger.LogInfo("InnoSetup input script is " + scriptsrc);
 
-                var scriptdst = Path.GetDirectoryName(ProjectPath) + Path.DirectorySeparatorChar + DestinationFolder + script;
+                var scriptdst = Path.GetDirectoryName(ProjectPath) + Path.DirectorySeparatorChar + OutputPath + script;
                 logger.LogInfo("InnoSetup output script is " + scriptdst);
 
                 File.Copy(scriptsrc, scriptdst, true);
