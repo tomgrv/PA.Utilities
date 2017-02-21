@@ -8,7 +8,7 @@
 	<PropertyGroup>
 		<InnoSetupCompilerVersion Condition="$(InnoSetupCompilerVersion) == '' Or $(InnoSetupCompilerVersion) == '*Undefined*'">5.5.9</InnoSetupCompilerVersion>
 	</PropertyGroup>
-	<UsingTask TaskName="InnoSetupTask.PreprocessInnoSetupScript" AssemblyFile="$(ThisPackageDirectory)\lib\PA.Utilities.InnoSetupTask.dll" />
+	<UsingTask TaskName="InnoSetupTask.PreprocessInnoSetupScript" AssemblyFile="$(ThisPackageDirectory)\..\lib\PA.Utilities.InnoSetupTask.dll" />
 	<ItemGroup>
 		<InnoSetupScripts Include="*.iss" />
 	</ItemGroup>
