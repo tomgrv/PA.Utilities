@@ -10,7 +10,6 @@ using PA.Utilities.InnoSetupTask.InnoSetup;
 using System.Globalization;
 using System.Reflection;
 using System.Collections.Generic;
-using PA.Utilities.InnoSetupTask.Utils;
 
 namespace PA.Utilities.InnoSetupTask
 {
