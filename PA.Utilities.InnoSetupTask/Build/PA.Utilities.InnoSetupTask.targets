@@ -56,7 +56,7 @@
 		<Message Importance="High" Text="Working in $(InnoSetupTaskPath)" />
 		<Message Importance="High" Text="Update scripts: @(InnoSetupScripts)" />
 		<Message Importance="High" Text="Include code: @(InnoSetupExtraCode)" />
-		<PreprocessInnoSetupScript ProjectFile="$(MSBuildProjectFullPath)" Scripts="@(InnoSetupScripts)" ExtraCode="@(InnoSetupExtraCode)" IntermediateOutputPath="$(IntermediateOutputPath)" DestinationFolder="$(OutputPath)" />
+		<PreprocessInnoSetupScript ProjectPath="$(MSBuildProjectFullPath)" SolutionPath="$(SolutionDir)" Scripts="@(InnoSetupScripts)" ExtraCode="@(InnoSetupExtraCode)" OutputPath="$(OutputPath)" />
 	</Target>
 	<Target Name="CompileInnoSetupScript" DependsOnTargets="PreprocessInnoSetupScript">
 	</Target>
