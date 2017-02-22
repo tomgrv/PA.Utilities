@@ -60,6 +60,9 @@
 		<Exec Command="&quot;$(SolutionDir)packages\Tools.InnoSetup.$(InnoSetupCompilerVersion)\tools\ISCC.exe&quot; &quot;%(InnoSetupPreprocessed.Identity)&quot;" WorkingDirectory="$(TargetDir)" />
 	</Target>
 	<Target Name="CleanInnoSetupScripts" AfterTargets="CoreClean">
+		<CreateItem Include="@(InnoSetupScripts-&gt;'$(TargetDir)%(Filename)%(Extension)')">
+			<Output ItemName="InnoSetupPreprocessed" TaskParameter="Include" />
+		</CreateItem>
 		<Message Importance="High" Text="Clean following scripts :@(InnoSetupPreprocessed)" />
 		<Delete Files="@(InnoSetupPreprocessed)" />
 	</Target>
