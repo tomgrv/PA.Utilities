@@ -27,7 +27,6 @@ namespace PA.Utilities.InnoSetupTask
             this.IncludeCodeSnippets = true;
         }
 
-
         [Required]
         public string SolutionPath { get; set; }
 
@@ -39,7 +38,7 @@ namespace PA.Utilities.InnoSetupTask
         public string Platform { get; set; }
 
         [Required]
-        public string OutputPath { get; set; }
+        public string TargetDir { get; set; }
 
         [Required]
         public ITaskItem[] Scripts { get; set; }
@@ -81,30 +80,47 @@ namespace PA.Utilities.InnoSetupTask
         {
             logger.LogInfo("Project is " + ProjectPath);
 
+            AppDomain.CurrentDomain.AssemblyResolve += (sender, e) =>
+            {
+                var name = e.Name.Split(',')[0];
+                var list = Directory.EnumerateFiles(Path.GetDirectoryName(SolutionPath) + Path.DirectorySeparatorChar + "packages", name + "*.dll", SearchOption.AllDirectories);
+
+                logger.LogInfo("Load dependent assembly \"" + name + "\"");
+
+                foreach (var asm in list)
+                {
+                    try
+                    {
+                        if (File.Exists(asm)) return Assembly.LoadFrom(asm);
+                    }
+                    catch
+                    {
+                        logger.LogError("Cannot load dependent assembly \"" + name + "\" from \"" + asm + "\"");
+                    }
+                }
+
+                return null;
+            };
+
             var s = new SolutionProcessor(SolutionPath);
-            var p = new ProjectProcessor(ProjectPath, Configuration, Platform);
+            var p = (Configuration != null && Platform != null) ? new ProjectProcessor(ProjectPath, Configuration, Platform) : new ProjectProcessor(ProjectPath);
 
             var targets = new List<ITaskItem>();
 
             foreach (var script in this.Scripts.Select(e => e.ItemSpec))
             {
-                var scriptsrc = Path.GetDirectoryName(ProjectPath) + Path.DirectorySeparatorChar + script;
+                var scriptsrc = Path.Combine(Path.GetDirectoryName(ProjectPath), script);
                 logger.LogInfo("InnoSetup input script is " + scriptsrc);
 
-                var scriptdst = Path.GetDirectoryName(ProjectPath) + Path.DirectorySeparatorChar + OutputPath + script;
+                var scriptdst = Path.Combine(Path.GetDirectoryName(ProjectPath), TargetDir) + Path.GetFileName(script);
                 logger.LogInfo("InnoSetup output script is " + scriptdst);
 
                 File.Copy(scriptsrc, scriptdst, true);
 
                 var t = p.GetProjectTarget();
 
-                logger.LogInfo("InnoSetup target is " + scriptdst);
-
-
                 var a = Assembly.ReflectionOnlyLoadFrom(t);
 
-                // IsolatedDomain.ReflectionOnlyLoadFrom(t, a =>
-                // {
                 var scriptProcessor = new ScriptProcessor(scriptdst, a);
 
                 try
@@ -135,7 +151,6 @@ namespace PA.Utilities.InnoSetupTask
                 {
                     logger.LogError("InnoSetup script cannot be updated: " + e.Message + "\n" + e.StackTrace);
                 }
-                // });
 
             }
 

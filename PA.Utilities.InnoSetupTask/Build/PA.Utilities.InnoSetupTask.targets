@@ -1,22 +1,23 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<PropertyGroup>
-		<SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">$(MSBuildProjectDirectory)\..\</SolutionDir>
-		<IntermediateOutputPath Condition="$(IntermediateOutputPath) == '' Or $(IntermediateOutputPath) == '*Undefined*'">$(MSBuildProjectDirectory)\obj\$(Configuration)\</IntermediateOutputPath>
-		<ThisPackageDirectory Condition="$(ThisPackageDirectory) == '' Or $(ThisPackageDirectory) == '*Undefined*'">$(MSBuildThisFileDirectory)..</ThisPackageDirectory>
-	</PropertyGroup>
-	<PropertyGroup>
+		<ThisPackageDirectory Condition="$(ThisPackageDirectory) == '' Or $(ThisPackageDirectory) == '*Undefined*'">$(MSBuildThisFileDirectory)..\..\</ThisPackageDirectory>
+		<GetVersion Condition=" '$(GetVersion)' == '' ">false</GetVersion>
 		<InnoSetupCompilerVersion Condition="$(InnoSetupCompilerVersion) == '' Or $(InnoSetupCompilerVersion) == '*Undefined*'">5.5.9</InnoSetupCompilerVersion>
 	</PropertyGroup>
-	<UsingTask TaskName="InnoSetupTask.PreprocessInnoSetupScript" AssemblyFile="$(ThisPackageDirectory)\..\lib\PA.Utilities.InnoSetupTask.dll" />
+	<UsingTask TaskName="InnoSetupTask.PreprocessInnoSetupScript" AssemblyFile="$(ThisPackageDirectory)\lib\PA.Utilities.InnoSetupTask.dll" />
 	<ItemGroup>
-		<InnoSetupScripts Include="*.iss" />
+		<InnoSetupScripts Include="$(ProjectDir)*.iss" />
+		<InnoSetupExtraCode Include="$(ThisPackageDirectory)**\*.iss" />
 	</ItemGroup>
-	<ItemGroup>
-		<InnoSetupExtraCode Include="$(ThisPackageDirectory)\**\*.iss" />
-	</ItemGroup>
-	<Target Name="BeforeBeforeBuild" BeforeTargets="BeforeBuild">
+	<Target Name="InnoSetupPrepare" BeforeTargets="BeforeBuild">
 		<HandleAssemblyResolve SearchPath="$(SolutionDir)packages" />
+		<CreateItem Include="@(InnoSetupScripts-&gt;'$(TargetDir)%(Filename)%(Extension)')">
+			<Output ItemName="InnoSetupPreprocessed" TaskParameter="Include" />
+		</CreateItem>
+		<Message Importance="Normal" Text="InnoSetup Scripts:  @(InnoSetupScripts)" />
+		<Message Importance="Normal" Text="InnoSetup Extra Code:  @(InnoSetupExtraCode)" />
+		<Message Importance="Normal" Text="InnoSetup Preprocessed:  @(InnoSetupPreprocessed)" />
 	</Target>
 	<UsingTask TaskName="HandleAssemblyResolve" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll">
 		<ParameterGroup>
@@ -52,28 +53,14 @@
 				]]></Code>
 		</Task>
 	</UsingTask>
-	<Target Name="PreprocessInnoSetupScript" BeforeTargets="CoreCompile" Inputs="@(InnoSetupScripts)" Outputs="@(InnoSetupScripts-&gt;'$(MSBuildProjectDirectory)\$(IntermediateOutputPath)%(Filename)%(Extension)')">
-		<Message Importance="High" Text="Working in $(InnoSetupTaskPath)" />
-		<Message Importance="High" Text="Update scripts: @(InnoSetupScripts)" />
-		<Message Importance="High" Text="Include code: @(InnoSetupExtraCode)" />
-		<PreprocessInnoSetupScript ProjectPath="$(MSBuildProjectFullPath)" SolutionPath="$(SolutionDir)" Scripts="@(InnoSetupScripts)" ExtraCode="@(InnoSetupExtraCode)" OutputPath="$(OutputPath)" />
+	<Target Name="PreprocessInnoSetupScript" AfterTargets="AfterBuild" Inputs="@(InnoSetupScripts)" Outputs="@(InnoSetupPreprocessed)">
+		<PreprocessInnoSetupScript ProjectPath="$(ProjectPath)" SolutionPath="$(SolutionPath)" Scripts="@(InnoSetupScripts)" ExtraCode="@(InnoSetupExtraCode)" TargetDir="$(TargetDir)" Configuration="$(Configuration)" Platform="$(Platform)" />
 	</Target>
-	<Target Name="CompileInnoSetupScript" DependsOnTargets="PreprocessInnoSetupScript">
+	<Target Name="CompileInnoSetupScript" AfterTargets="AfterBuild" DependsOnTargets="PreprocessInnoSetupScript">
+		<Exec Command="&quot;$(SolutionDir)packages\Tools.InnoSetup.$(InnoSetupCompilerVersion)\tools\ISCC.exe&quot; &quot;%(InnoSetupPreprocessed.Identity)&quot;" WorkingDirectory="$(TargetDir)" />
 	</Target>
 	<Target Name="CleanInnoSetupScripts" AfterTargets="CoreClean">
-		<Message Importance="High" Text="Clean following scripts: @(InnoSetupScripts-&gt;'$(MSBuildProjectDirectory)\$(IntermediateOutputPath)%(Filename)%(Extension)')" />
-		<Delete Files="@(InnoSetupScripts-&gt;'$(MSBuildProjectDirectory)\$(IntermediateOutputPath)%(Filename)%(Extension)')" />
+		<Message Importance="High" Text="Clean following scripts :@(InnoSetupPreprocessed)" />
+		<Delete Files="@(InnoSetupPreprocessed)" />
 	</Target>
-	<!--Support for ncrunch-->
-	<ItemGroup Condition=" $(NCrunch) != '' ">
-		<None Include="$(InnoSetupTaskDir)PA.Utilities.InnoSetupTask.dll">
-			<Visible>False</Visible>
-		</None>
-		<None Include="$(InnoSetupTaskDir)PA.Utilities.InnoSetupTask.pdb">
-			<Visible>False</Visible>
-		</None>
-		<None Include="$(InnoSetupTaskDir)NativeBinaries\**\*">
-			<Visible>False</Visible>
-		</None>
-	</ItemGroup>
 </Project>
