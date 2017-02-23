@@ -32,7 +32,15 @@ namespace PA.Utilities.InnoSetupTask.Microsoft
         {
             this.Project.SetProperty("Configuration", config);
             this.Project.SetProperty("Platform", platform);
-            this.Project.ReevaluateIfNecessary();
+
+            try
+            {
+                this.Project.ReevaluateIfNecessary();
+            }
+            catch (Exception e)
+            {
+
+            }
         }
 
         public ProjectProcessor(string path)
@@ -54,7 +62,14 @@ namespace PA.Utilities.InnoSetupTask.Microsoft
         {
             this.Project.SetProperty("Configuration", config);
             this.Project.SetProperty("Platform", platform);
-            this.Project.ReevaluateIfNecessary();
+            try
+            {
+                this.Project.ReevaluateIfNecessary();
+            }
+            catch (Exception e)
+            {
+
+            }
         }
 
         public void Init()
