@@ -126,20 +126,31 @@ namespace PA.Utilities.InnoSetupTask
                 try
                 {
                     if (this.UpdateDefineSection)
+                    {
+                        logger.LogInfo("Update #Define statements...");
                         scriptProcessor.UpdateDefine();
+                    }
 
                     if (this.UpdateSetupSection)
+                    {
+                        logger.LogInfo("Update [Setup] section...");
                         scriptProcessor.UpdateSetup();
+                    }
 
                     if (this.IncludeCodeSnippets)
+                    {
+                        logger.LogInfo("Update [Code] section...");
                         scriptProcessor.UpdateCode(this.ExtraCode.Select(e => new FileInfo(e.ItemSpec)).OrderBy(e => e.ToString()).ToArray());
+                    }
 
                     var files = s.GetFiles(Configuration, Platform);
 
+#if DEBUG
                     foreach (var f in files)
                     {
-                        logger.LogInfo("InnoSetup script will reference <" + f.Source + ">");
+                        logger.LogInfo("Reference found : " + f.Source);
                     }
+#endif
 
                     scriptProcessor.UpdateFile(files.ToArray());
 
