@@ -76,9 +76,13 @@ __If a file appears in multiple project, only one source is created by destdir. 
 </setup>
 ```
 
+## Bonus ##
+
+Works well with [GitVersion](http://github.com/GitTools/GitVersion) in order to get the [semantic version](http://semver.org/) of the commit being built.
+
 ## License (MIT)
 
-Copyright (c) 2016 [Thomas Gervais](http://www.github.com/tomgrv)
+Copyright (c) 2017 [Thomas Gervais](http://www.github.com/tomgrv)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
