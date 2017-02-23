@@ -29,7 +29,7 @@ begin
     // Set initial value (optional)
     DataDirPage.Values[0] :=  GetPreviousData('DataDir', '');
     if DataDirPage.Values[0] = '' then
-      DataDirPage.Values[0] := ExpandConstant('{sd}\WMT {#VersionInfoTextVersion}');
+      DataDirPage.Values[0] := ExpandConstant('{sd}\{#AppName} {#VersionInfoTextVersion}');
 
 
 end;
