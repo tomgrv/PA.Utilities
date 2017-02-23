@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<package>
+	<metadata minClientVersion="2.8">
+		<id>$id$</id>
+		<version>$version$</version>
+		<title>$title$</title>
+		<authors>$author$</authors>
+		<owners>$author$</owners>
+		<projectUrl>http://perspicapps.github.io/toolbox</projectUrl>
+		<licenseUrl>https://raw.githubusercontent.com/perspicapps/toolbox/master/LICENCE</licenseUrl>
+		<iconUrl>https://raw.githubusercontent.com/perspicapps/perspicapps.github.io/master/icons/logo-100.png</iconUrl>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<developmentDependency>true</developmentDependency>
+		<description>$description$</description>
+		<copyright>© PA 2014</copyright>
+	</metadata>
+	<files>
+		<!-- Include everything in \build -->
+		<file src="Build\$id$.targets" target="build\dotnet" />
+		<!-- Include ref for targets file -->
+		<file src="bin\$configuration$\$id$.dll" target="lib" />
+		<!-- ... -->
+	</files>
+</package>

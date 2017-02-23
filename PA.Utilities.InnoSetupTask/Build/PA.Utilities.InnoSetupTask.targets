@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<PropertyGroup>
+		<ThisPackageDirectory Condition="$(ThisPackageDirectory) == '' Or $(ThisPackageDirectory) == '*Undefined*'">$(MSBuildThisFileDirectory)..\..\</ThisPackageDirectory>
+		<GetVersion Condition=" '$(GetVersion)' == '' ">false</GetVersion>
+		<InnoSetupCompilerVersion Condition="$(InnoSetupCompilerVersion) == '' Or $(InnoSetupCompilerVersion) == '*Undefined*'">5.5.9</InnoSetupCompilerVersion>
+	</PropertyGroup>
+	<UsingTask TaskName="InnoSetupTask.PreprocessInnoSetupScript" AssemblyFile="$(ThisPackageDirectory)\lib\PA.Utilities.InnoSetupTask.dll" />
+	<ItemGroup>
+		<InnoSetupScripts Include="$(ProjectDir)*.iss" />
+		<InnoSetupExtraCode Include="$(ThisPackageDirectory)**\*.iss" />
+	</ItemGroup>
+	<Target Name="InnoSetupPrepare" BeforeTargets="BeforeBuild">
+		<HandleAssemblyResolve SearchPath="$(SolutionDir)packages" />
+		<CreateItem Include="@(InnoSetupScripts-&gt;'$(TargetDir)%(Filename)%(Extension)')">
+			<Output ItemName="InnoSetupPreprocessed" TaskParameter="Include" />
+		</CreateItem>
+		<Message Importance="Normal" Text="InnoSetup Scripts:  @(InnoSetupScripts)" />
+		<Message Importance="Normal" Text="InnoSetup Extra Code:  @(InnoSetupExtraCode)" />
+		<Message Importance="Normal" Text="InnoSetup Preprocessed:  @(InnoSetupPreprocessed)" />
+	</Target>
+	<UsingTask TaskName="HandleAssemblyResolve" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll">
+		<ParameterGroup>
+			<SearchPath ParameterType="System.String" Required="true" />
+		</ParameterGroup>
+		<Task>
+			<Using Namespace="System" />
+			<Using Namespace="System.IO" />
+			<Using Namespace="System.Reflection" />
+			<Using Namespace="System.Collections.Generic" />
+			<Using Namespace="System.Linq" />
+			<Code Type="Fragment" Language="cs"><![CDATA[
+					Log.LogMessage("Handle dependencies from "+SearchPath, MessageImportance.High);  
+					AppDomain.CurrentDomain.AssemblyResolve += (sender, e) => 
+					{
+						var name = e.Name.Split(',')[0];
+						var list = Directory.EnumerateFiles(SearchPath, name+"*.dll", SearchOption.AllDirectories);
+
+						foreach(var asm in list)
+						{
+							try
+							{
+								if (File.Exists(asm)) return Assembly.LoadFrom(asm);
+							}
+							catch
+							{
+								Log.LogMessage("Cannot load "+asm, MessageImportance.High);  
+							}
+						}
+					
+						return null;
+					};
+				]]></Code>
+		</Task>
+	</UsingTask>
+	<Target Name="PreprocessInnoSetupScript" AfterTargets="AfterBuild" Inputs="@(InnoSetupScripts)" Outputs="@(InnoSetupPreprocessed)">
+		<PreprocessInnoSetupScript ProjectPath="$(ProjectPath)" SolutionPath="$(SolutionPath)" Scripts="@(InnoSetupScripts)" ExtraCode="@(InnoSetupExtraCode)" TargetDir="$(TargetDir)" Configuration="$(Configuration)" Platform="$(Platform)" />
+	</Target>
+	<Target Name="CompileInnoSetupScript" AfterTargets="AfterBuild" DependsOnTargets="PreprocessInnoSetupScript">
+		<Exec Command="&quot;$(SolutionDir)packages\Tools.InnoSetup.$(InnoSetupCompilerVersion)\tools\ISCC.exe&quot; &quot;%(InnoSetupPreprocessed.Identity)&quot;" WorkingDirectory="$(TargetDir)" />
+	</Target>
+	<Target Name="CleanInnoSetupScripts" AfterTargets="CoreClean">
+		<CreateItem Include="@(InnoSetupScripts-&gt;'$(TargetDir)%(Filename)%(Extension)')">
+			<Output ItemName="InnoSetupPreprocessed" TaskParameter="Include" />
+		</CreateItem>
+		<Message Importance="High" Text="Clean following scripts :@(InnoSetupPreprocessed)" />
+		<Delete Files="@(InnoSetupPreprocessed)" />
+	</Target>
+</Project>

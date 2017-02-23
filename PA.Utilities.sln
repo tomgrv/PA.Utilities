@@ -20,16 +20,42 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		common\GlobalAssemblyInfo.cs = common\GlobalAssemblyInfo.cs
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PA.Utilities.InnoSetupTask", "PA.Utilities.InnoSetupTask\PA.Utilities.InnoSetupTask.csproj", "{D88976E0-7A93-4974-BDA0-DABD342A72B4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{F2C9256B-A6C1-4FAF-8DF0-3A15092F50B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F2C9256B-A6C1-4FAF-8DF0-3A15092F50B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F2C9256B-A6C1-4FAF-8DF0-3A15092F50B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F2C9256B-A6C1-4FAF-8DF0-3A15092F50B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2C9256B-A6C1-4FAF-8DF0-3A15092F50B7}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{F2C9256B-A6C1-4FAF-8DF0-3A15092F50B7}.Debug|x64.Build.0 = Debug|Any CPU
+		{F2C9256B-A6C1-4FAF-8DF0-3A15092F50B7}.Release|x64.ActiveCfg = Release|Any CPU
+		{F2C9256B-A6C1-4FAF-8DF0-3A15092F50B7}.Release|x64.Build.0 = Release|Any CPU
+		{F2C9256B-A6C1-4FAF-8DF0-3A15092F50B7}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F2C9256B-A6C1-4FAF-8DF0-3A15092F50B7}.Debug|x86.Build.0 = Debug|Any CPU
+		{F2C9256B-A6C1-4FAF-8DF0-3A15092F50B7}.Release|x86.ActiveCfg = Release|Any CPU
+		{F2C9256B-A6C1-4FAF-8DF0-3A15092F50B7}.Release|x86.Build.0 = Release|Any CPU
+		{D88976E0-7A93-4974-BDA0-DABD342A72B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D88976E0-7A93-4974-BDA0-DABD342A72B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D88976E0-7A93-4974-BDA0-DABD342A72B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D88976E0-7A93-4974-BDA0-DABD342A72B4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D88976E0-7A93-4974-BDA0-DABD342A72B4}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D88976E0-7A93-4974-BDA0-DABD342A72B4}.Debug|x64.Build.0 = Debug|Any CPU
+		{D88976E0-7A93-4974-BDA0-DABD342A72B4}.Release|x64.ActiveCfg = Release|Any CPU
+		{D88976E0-7A93-4974-BDA0-DABD342A72B4}.Release|x64.Build.0 = Release|Any CPU
+		{D88976E0-7A93-4974-BDA0-DABD342A72B4}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D88976E0-7A93-4974-BDA0-DABD342A72B4}.Debug|x86.Build.0 = Debug|Any CPU
+		{D88976E0-7A93-4974-BDA0-DABD342A72B4}.Release|x86.ActiveCfg = Release|Any CPU
+		{D88976E0-7A93-4974-BDA0-DABD342A72B4}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		UpdateAssemblyVersion = True
@@ -42,6 +68,22 @@ Global
 		$0.DotNetNamingPolicy = $1
 		$1.DirectoryNamespaceAssociation = Flat
 		$1.ResourceNamePolicy = FileName
+		$0.StandardHeader = $2
+		$2.Text = 
+		$2.IncludeInNewFiles = True
+		$0.NameConventionPolicy = $3
+		$3.Rules = $4
+		$4.NamingRule = $5
+		$5.Name = Type Parameters
+		$5.AffectedEntity = TypeParameter
+		$5.VisibilityMask = VisibilityMask
+		$5.NamingStyle = PascalCase
+		$5.IncludeInstanceMembers = True
+		$5.IncludeStaticEntities = True
+		$5.RequiredPrefixes = $6
+		$6.String = T
+		$5.RequiredSuffixes = $7
+		$7.String = Exception
 		version = 5
 	EndGlobalSection
 EndGlobal
