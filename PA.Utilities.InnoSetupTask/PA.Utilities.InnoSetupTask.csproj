@@ -97,6 +97,7 @@
       <Project>{F2C9256B-A6C1-4FAF-8DF0-3A15092F50B7}</Project>
       <Name>PA.Utilities</Name>
       <IncludeInPackage>true</IncludeInPackage>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
