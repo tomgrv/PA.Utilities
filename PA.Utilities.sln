@@ -18,6 +18,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6C7B056E-F1F3-4ABD-818A-D405A3DEF8BB}"
 	ProjectSection(SolutionItems) = preProject
 		common\GlobalAssemblyInfo.cs = common\GlobalAssemblyInfo.cs
+		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PA.Utilities.InnoSetupTask", "PA.Utilities.InnoSetupTask\PA.Utilities.InnoSetupTask.csproj", "{D88976E0-7A93-4974-BDA0-DABD342A72B4}"
