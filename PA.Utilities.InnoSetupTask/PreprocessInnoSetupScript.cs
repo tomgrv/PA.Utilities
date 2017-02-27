@@ -82,16 +82,21 @@ namespace PA.Utilities.InnoSetupTask
 
             AppDomain.CurrentDomain.AssemblyResolve += (sender, e) =>
             {
-                var name = e.Name.Split(',')[0];
-                var list = Directory.EnumerateFiles(Path.GetDirectoryName(SolutionPath) + Path.DirectorySeparatorChar + "packages", name + "*.dll", SearchOption.AllDirectories);
+                var name = new AssemblyName(e.Name);
+                var list = Directory.EnumerateFiles(Path.GetDirectoryName(SolutionPath) + Path.DirectorySeparatorChar + "packages", name.Name + "*.dll", SearchOption.AllDirectories);
 
-                logger.LogInfo("Load dependent assembly \"" + name + "\"");
+                logger.LogInfo("Load dependent assembly \"" + e.Name + "\"");
 
                 foreach (var asm in list)
                 {
                     try
                     {
-                        if (File.Exists(asm)) return Assembly.LoadFrom(asm);
+                        if (File.Exists(asm) && AssemblyName.GetAssemblyName(asm).Version.CompareTo(name.Version) <= 0)
+                        {
+                            return Assembly.LoadFrom(asm);
+                        }
+
+                        logger.LogWarning("Skip assembly \"" + name + "\" from \"" + asm + "\"");
                     }
                     catch
                     {
