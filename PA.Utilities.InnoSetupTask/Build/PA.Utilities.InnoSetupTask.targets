@@ -5,23 +5,14 @@
 		<GetVersion Condition=" '$(GetVersion)' == '' ">false</GetVersion>
 		<InnoSetupCompilerVersion Condition="$(InnoSetupCompilerVersion) == '' Or $(InnoSetupCompilerVersion) == '*Undefined*'">5.5.9</InnoSetupCompilerVersion>
 	</PropertyGroup>
-	<UsingTask TaskName="InnoSetupTask.PreprocessInnoSetupScript" AssemblyFile="$(ThisPackageDirectory)\lib\PA.Utilities.InnoSetupTask.dll" />
 	<ItemGroup>
 		<InnoSetupScripts Include="$(ProjectDir)*.iss" />
 		<InnoSetupExtraCode Include="$(ThisPackageDirectory)**\*.iss" />
 	</ItemGroup>
-	<Target Name="InnoSetupPrepare" BeforeTargets="BeforeBuild">
-		<HandleAssemblyResolve SearchPath="$(SolutionDir)packages" />
-		<CreateItem Include="@(InnoSetupScripts-&gt;'$(TargetDir)%(Filename)%(Extension)')">
-			<Output ItemName="InnoSetupPreprocessed" TaskParameter="Include" />
-		</CreateItem>
-		<Message Importance="Normal" Text="InnoSetup Scripts:  @(InnoSetupScripts)" />
-		<Message Importance="Normal" Text="InnoSetup Extra Code:  @(InnoSetupExtraCode)" />
-		<Message Importance="Normal" Text="InnoSetup Preprocessed:  @(InnoSetupPreprocessed)" />
-	</Target>
+	<UsingTask TaskName="PreprocessInnoSetupScript" AssemblyFile="$(ThisPackageDirectory)\lib\PA.Utilities.InnoSetupTask.dll" />
 	<UsingTask TaskName="HandleAssemblyResolve" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll">
 		<ParameterGroup>
-			<SearchPath ParameterType="System.String" Required="true" />
+			<SolutionPath ParameterType="System.String" Required="true" />
 		</ParameterGroup>
 		<Task>
 			<Using Namespace="System" />
@@ -30,29 +21,46 @@
 			<Using Namespace="System.Collections.Generic" />
 			<Using Namespace="System.Linq" />
 			<Code Type="Fragment" Language="cs"><![CDATA[
-					Log.LogMessage("Handle dependencies from "+SearchPath, MessageImportance.High);  
-					AppDomain.CurrentDomain.AssemblyResolve += (sender, e) => 
-					{
-						var name = e.Name.Split(',')[0];
-						var list = Directory.EnumerateFiles(SearchPath, name+"*.dll", SearchOption.AllDirectories);
+					Log.LogMessage("# Handle dependencies from "+SolutionPath, MessageImportance.High);  
+          
+					 AppDomain.CurrentDomain.AssemblyResolve += (sender, e) =>
+            {
+                var name = new AssemblyName(e.Name);
+                var list = Directory.EnumerateFiles(Path.GetDirectoryName(SolutionPath) + Path.DirectorySeparatorChar + "packages", name.Name + "*.dll", SearchOption.AllDirectories);
 
-						foreach(var asm in list)
-						{
-							try
-							{
-								if (File.Exists(asm)) return Assembly.LoadFrom(asm);
-							}
-							catch
-							{
-								Log.LogMessage("Cannot load "+asm, MessageImportance.High);  
-							}
-						}
-					
-						return null;
-					};
+                Log.LogMessage("# Load dependent assembly \"" + e.Name + "\"", MessageImportance.Low); 
+
+                foreach (var asm in list)
+                {
+                    try
+                    {
+                        if (File.Exists(asm) && AssemblyName.GetAssemblyName(asm).Version.CompareTo(name.Version) <= 0)
+                        {
+                            return Assembly.LoadFrom(asm);
+                        }
+
+                        Log.LogMessage("# Skip assembly \"" + name + "\" from \"" + asm + "\"", MessageImportance.High);  
+                    }
+                    catch
+                    {
+                       Log.LogMessage("# Cannot load dependent assembly \"" + name + "\" from \"" + asm + "\"", MessageImportance.High);  
+                    }
+                }
+
+                return null;
+            };
 				]]></Code>
 		</Task>
 	</UsingTask>
+	<Target Name="InnoSetupPrepare" BeforeTargets="BeforeBuild">
+		<CreateItem Include="@(InnoSetupScripts-&gt;'$(TargetDir)%(Filename)%(Extension)')">
+			<Output ItemName="InnoSetupPreprocessed" TaskParameter="Include" />
+		</CreateItem>
+		<Message Importance="Normal" Text="InnoSetup Scripts:  @(InnoSetupScripts)" />
+		<Message Importance="Normal" Text="InnoSetup Extra Code:  @(InnoSetupExtraCode)" />
+		<Message Importance="Normal" Text="InnoSetup Preprocessed:  @(InnoSetupPreprocessed)" />
+		<HandleAssemblyResolve SolutionPath="$(SolutionPath)" />
+	</Target>
 	<Target Name="PreprocessInnoSetupScript" AfterTargets="AfterBuild" Inputs="@(InnoSetupScripts)" Outputs="@(InnoSetupPreprocessed)">
 		<PreprocessInnoSetupScript ProjectPath="$(ProjectPath)" SolutionPath="$(SolutionPath)" Scripts="@(InnoSetupScripts)" ExtraCode="@(InnoSetupExtraCode)" TargetDir="$(TargetDir)" Configuration="$(Configuration)" Platform="$(Platform)" />
 	</Target>

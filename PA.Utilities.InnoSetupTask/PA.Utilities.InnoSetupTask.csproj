@@ -75,6 +75,7 @@
     <Compile Include="InnoSetup\ScriptParser.cs" />
     <Compile Include="PreprocessInnoSetupScript.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="InnoSetup\DataParser.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -95,6 +96,7 @@
     <ProjectReference Include="..\PA.Utilities\PA.Utilities.csproj">
       <Project>{F2C9256B-A6C1-4FAF-8DF0-3A15092F50B7}</Project>
       <Name>PA.Utilities</Name>
+      <IncludeInPackage>true</IncludeInPackage>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
