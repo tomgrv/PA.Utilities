@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Microsoft.Build.Construction;
 
 namespace NuGet.Common
 {
@@ -12,15 +13,13 @@ namespace NuGet.Common
     /// </summary>
     internal class Solution
     {
-        private static readonly Type _solutionParserType = GetSolutionParserType();
-        private static readonly PropertyInfo _solutionReaderProperty = GetSolutionReaderProperty();
-        private static readonly MethodInfo _parseSolutionMethod = GetParseSolutionMethod();
-        private static readonly PropertyInfo _projectsProperty = GetProjectsProperty();
-
         public List<ProjectInSolution> Projects { get; private set; }
+
+		public SolutionFile SolutionFile { get; private set; }
 
         public string DirectoryName { get; private set; }
         public string SolutionName { get; private set; }
+
 
         public Solution(string solutionFileName)
         {
@@ -28,64 +27,14 @@ namespace NuGet.Common
             this.DirectoryName = Path.GetDirectoryName(solutionFileName);
             this.SolutionName = Path.GetFileNameWithoutExtension(solutionFileName);
 
-            var solutionParser = _solutionParserType.GetConstructor(
-                BindingFlags.Instance | BindingFlags.NonPublic,
-                binder: null, types: Type.EmptyTypes, modifiers: null).Invoke(null);
-            using (var streamReader = new StreamReader(File.OpenRead(solutionFileName)))
-            {
-                _solutionReaderProperty.SetValue(solutionParser, streamReader, index: null);
-                _parseSolutionMethod.Invoke(solutionParser, parameters: null);
-            }
+			this.SolutionFile = SolutionFile.Parse(solutionFileName);
 
             this.Projects = new List<ProjectInSolution>();
-            foreach (var proj in (object[])_projectsProperty.GetValue(solutionParser, index: null))
+			foreach (var project in this.SolutionFile.ProjectsInOrder)
             {
-                this.Projects.Add(new ProjectInSolution(proj));
+                this.Projects.Add(project);
             }
 
-        }
-
-        private static Type GetSolutionParserType()
-        {
-            var assembly = typeof(Microsoft.Build.Construction.ProjectElement).Assembly;
-            var solutionParserType = assembly.GetType("Microsoft.Build.Construction.SolutionParser");
-
-            if (solutionParserType == null)
-            {
-                throw new Exception("Cannot Find Parser");
-            }
-
-            return solutionParserType;
-        }
-
-        private static PropertyInfo GetSolutionReaderProperty()
-        {
-            if (_solutionParserType != null)
-            {
-                return _solutionParserType.GetProperty("SolutionReader", BindingFlags.NonPublic | BindingFlags.Instance);
-            }
-
-            return null;
-        }
-
-        private static MethodInfo GetParseSolutionMethod()
-        {
-            if (_solutionParserType != null)
-            {
-                return _solutionParserType.GetMethod("ParseSolution", BindingFlags.NonPublic | BindingFlags.Instance);
-            }
-
-            return null;
-        }
-
-        private static PropertyInfo GetProjectsProperty()
-        {
-            if (_solutionParserType != null)
-            {
-                return _solutionParserType.GetProperty("Projects", BindingFlags.NonPublic | BindingFlags.Instance);
-            }
-
-            return null;
         }
     }
 }
