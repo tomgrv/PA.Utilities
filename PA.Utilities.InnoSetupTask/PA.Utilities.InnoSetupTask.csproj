@@ -42,20 +42,24 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
-    <Reference Include="Microsoft.Build" />
-    <Reference Include="INIFileParser">
-      <HintPath>..\packages\ini-parser.2.3.0\lib\net20\INIFileParser.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Web.XmlTransform">
       <HintPath>..\packages\Microsoft.Web.Xdt.2.1.1\lib\net40\Microsoft.Web.XmlTransform.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Build.Framework" />
-    <Reference Include="Microsoft.Build.Utilities.v4.0" />
-    <Reference Include="Microsoft.Build.Tasks.v4.0" />
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.Build.Engine" />
     <Reference Include="NuGet.Core">
       <HintPath>..\packages\NuGet.Core.2.14.0\lib\net40-Client\NuGet.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Build.Utilities.v4.0" />
+    <Reference Include="Microsoft.Build.Tasks.v4.0" />
+    <Reference Include="INIFileParser">
+      <HintPath>..\packages\ini-parser.3.4.0\lib\net20\INIFileParser.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Build.Framework">
+      <HintPath>..\packages\Microsoft.Build.Framework.14.3.0\lib\net45\Microsoft.Build.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Build">
+      <HintPath>..\packages\Microsoft.Build.14.3.0\lib\net45\Microsoft.Build.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -64,7 +68,6 @@
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Nuget.Common\Solution.cs" />
-    <Compile Include="Nuget.Common\ProjectInSolution.cs" />
     <Compile Include="Utils\TaskLogger.cs" />
     <Compile Include="Utils\BuildLogger.cs" />
     <Compile Include="Utils\TempFileTracker.cs" />

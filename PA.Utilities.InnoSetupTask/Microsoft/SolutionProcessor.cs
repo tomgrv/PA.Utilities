@@ -10,6 +10,7 @@ using System.Xml;
 using System.Reflection;
 using System.Diagnostics;
 using PA.Utilities.InnoSetupTask.InnoSetup;
+using Microsoft.Build.Construction;
 
 namespace PA.Utilities.InnoSetupTask.Microsoft
 {
@@ -33,7 +34,7 @@ namespace PA.Utilities.InnoSetupTask.Microsoft
 
             using (var pc = new ProjectCollection())
             {
-                foreach (ProjectInSolution prj in solution.Projects.Where(p => !p.IsSolutionFolder))
+				foreach (ProjectInSolution prj in solution.Projects.Where(p => p.ProjectType != SolutionProjectType.SolutionFolder ))
                 {
                     var project = new ProjectProcessor(pc.LoadProject(Path.Combine(solution.DirectoryName, prj.RelativePath)));
                     project.Init();
@@ -46,7 +47,7 @@ namespace PA.Utilities.InnoSetupTask.Microsoft
         {
             using (var pc = new ProjectCollection())
             {
-                foreach (ProjectInSolution prj in this.Solution.Projects.Where(p => !p.IsSolutionFolder))
+                foreach (ProjectInSolution prj in this.Solution.Projects.Where(p => p.ProjectType != SolutionProjectType.SolutionFolder))
                 {
                     var pp = new ProjectProcessor(pc.LoadProject(Path.Combine(this.Solution.DirectoryName, prj.RelativePath)), configuration, platform);
 
