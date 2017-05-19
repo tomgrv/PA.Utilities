@@ -64,7 +64,7 @@ namespace PA.Utilities.InnoSetupTask.InnoSetup
 		}
 
 		private string GetFullSemVer(string s)
-		{             return s.Substring(0, s.IndexOf('+') > 0 ? s.IndexOf('.',s.IndexOf('+')) : s.Length - 1);
+		{             return s.Substring(0, s.IndexOf('+') > 0 ? s.IndexOf('+') : s.Length - 1);
 		}
 
 
