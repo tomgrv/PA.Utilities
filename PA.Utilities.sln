@@ -21,9 +21,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		common\GlobalAssemblyInfo.cs = common\GlobalAssemblyInfo.cs
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PA.Utilities.InnoSetupTask", "PA.Utilities.InnoSetupTask\PA.Utilities.InnoSetupTask.csproj", "{D88976E0-7A93-4974-BDA0-DABD342A72B4}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PA.Utilities.AssemblyMetadata", "PA.Utilities.AssemblyMetadata\PA.Utilities.AssemblyMetadata.csproj", "{C7FBB046-F857-4213-A703-EDEB07C74182}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PA.Utilities.InnoSetupTask", "PA.Utilities.InnoSetupTask\PA.Utilities.InnoSetupTask.csproj", "{D88976E0-7A93-4974-BDA0-DABD342A72B4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PA.Utilities.IniParser", "PA.Utilities.IniParser\PA.Utilities.IniParser.csproj", "{1D2869CF-B9CF-4487-BE26-19EAE2D87CF2}"
 EndProject
