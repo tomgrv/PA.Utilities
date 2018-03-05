@@ -68,7 +68,7 @@ namespace PA.Utilities.InnoSetupTask
             }
             catch (Exception exception)
             {
-                logger.LogError("Error occurred: " + exception + "\n" + exception.StackTrace);
+				logger.LogError("Error occurred: " + exception + " at line "+exception.Source+"\n" + exception.StackTrace);
                 return false;
             }
             finally
