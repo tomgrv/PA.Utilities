@@ -68,7 +68,7 @@ namespace PA.Utilities.InnoSetupTask
             }
             catch (Exception exception)
             {
-				logger.LogError("Error occurred: " + exception + " at line "+exception.Source+"\n" + exception.StackTrace);
+				logger.LogError("Error occurred: " + exception );
                 return false;
             }
             finally
@@ -82,6 +82,8 @@ namespace PA.Utilities.InnoSetupTask
 
             AppDomain.CurrentDomain.AssemblyResolve += (sender, e) =>
             {
+				logger.LogInfo("Loading " + e.ToString());
+
                 var name = new AssemblyName(e.Name);
                 var list = Directory.EnumerateFiles(Path.GetDirectoryName(SolutionPath) + Path.DirectorySeparatorChar + "packages", name.Name + "*.dll", SearchOption.AllDirectories);
 

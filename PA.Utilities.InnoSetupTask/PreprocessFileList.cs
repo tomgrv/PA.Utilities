@@ -33,7 +33,7 @@ namespace PA.Utilities.InnoSetupTask
             }
             catch (Exception exception)
             {
-                logger.LogError("Error occurred: " + exception +" at line " + exception.Source );
+                logger.LogError("Error occurred: " + exception);
                 return false;
             }
             finally
