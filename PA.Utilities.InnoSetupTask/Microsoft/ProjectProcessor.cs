@@ -105,14 +105,16 @@ namespace PA.Utilities.InnoSetupTask.Microsoft
 
         public string GetProjectTarget()
         {
-            return this.GetProjectProperty("TargetPath");
+            return this.GetProjectProperty("TargetPath") ;
+
+
         }
 
         public string GetProjectProperty(string name)
         {
             name = name.ToLower();
             var prop = this.Project?.AllEvaluatedProperties?.FirstOrDefault(p => p.Name.ToLower() == name);
-            return prop != null ? prop.EvaluatedValue : "";
+            return prop != null ? prop.EvaluatedValue : this.Project.GetPropertyValue(name);
         }
 
         private IEnumerable<ProjectItem> GetProjectItems(string type)
