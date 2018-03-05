@@ -114,6 +114,10 @@ namespace PA.Utilities.InnoSetupTask.Microsoft
         {
             name = name.ToLower();
 
+			l?.LogInfo("Fetch " + name + " property...");
+
+			this.Project.ReevaluateIfNecessary();
+
 			foreach (var p in this.Project?.AllEvaluatedProperties)
 			{
 				l?.LogInfo(p.Name + " = " + p.EvaluatedValue);
