@@ -82,8 +82,6 @@ namespace PA.Utilities.InnoSetupTask
 
             AppDomain.CurrentDomain.AssemblyResolve += (sender, e) =>
             {
-				logger.LogInfo("Loading " + e.ToString());
-
                 var name = new AssemblyName(e.Name);
                 var list = Directory.EnumerateFiles(Path.GetDirectoryName(SolutionPath) + Path.DirectorySeparatorChar + "packages", name.Name + "*.dll", SearchOption.AllDirectories);
 
@@ -125,6 +123,8 @@ namespace PA.Utilities.InnoSetupTask
                 File.Copy(scriptsrc, scriptdst, true);
 
                 var t = p.GetProjectTarget();
+
+				logger.LogInfo("Project target is " + t);
 
                 var a = Assembly.ReflectionOnlyLoadFrom(t);
 
