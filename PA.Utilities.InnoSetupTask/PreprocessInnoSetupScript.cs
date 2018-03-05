@@ -122,7 +122,7 @@ namespace PA.Utilities.InnoSetupTask
 
                 File.Copy(scriptsrc, scriptdst, true);
 
-				var t = Path.Combine(Path.GetDirectoryName(ProjectPath), TargetDir) + p.Project.GetPropertyValue("AssemblyName");
+				var t = Path.Combine(Path.GetDirectoryName(ProjectPath), TargetDir) + p.GetProjectProperty("AssemblyName", logger);
 
                 var a = Assembly.ReflectionOnlyLoadFrom(t);
 

@@ -110,10 +110,16 @@ namespace PA.Utilities.InnoSetupTask.Microsoft
 
         }
 
-        public string GetProjectProperty(string name)
+		internal string GetProjectProperty(string name, TaskLogger l = null)
         {
             name = name.ToLower();
-            var prop = this.Project?.AllEvaluatedProperties?.FirstOrDefault(p => p.Name.ToLower() == name);
+
+			foreach (var p in this.Project?.AllEvaluatedProperties)
+			{
+				l?.LogInfo(p.Name + " = " + p.EvaluatedValue);
+			}
+
+			var prop = this.Project?.AllEvaluatedProperties?.FirstOrDefault(p => p.Name.ToLower() == name);
             return prop != null ? prop.EvaluatedValue : this.Project.GetPropertyValue(name);
         }
 
