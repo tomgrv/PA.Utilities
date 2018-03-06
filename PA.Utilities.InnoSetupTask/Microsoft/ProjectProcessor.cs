@@ -62,6 +62,7 @@ namespace PA.Utilities.InnoSetupTask.Microsoft
         {
             this.Project.SetProperty("Configuration", config);
             this.Project.SetProperty("Platform", platform);
+
             try
             {
                 this.Project.ReevaluateIfNecessary();
@@ -112,8 +113,6 @@ namespace PA.Utilities.InnoSetupTask.Microsoft
 
 		internal string GetProjectProperty(string name, TaskLogger l = null)
         {
-            name = name.ToLower();
-
 			l?.LogInfo("Fetch " + name + " property...");
 
 			foreach (var p in this.Project?.AllEvaluatedProperties)
@@ -121,7 +120,12 @@ namespace PA.Utilities.InnoSetupTask.Microsoft
 				l?.LogInfo(p.Name + " = " + p.EvaluatedValue);
 			}
 
-			var prop = this.Project?.AllEvaluatedProperties?.FirstOrDefault(p => p.Name.ToLower() == name);
+			foreach (var p in this.Project?.AllEvaluatedProperties)
+			{
+				l?.LogInfo(p.Name + " = " + p.EvaluatedValue);
+			}
+
+			var prop = this.Project?.AllEvaluatedProperties?.FirstOrDefault(p => p.Name.ToLower() == name.ToLower());
             return prop != null ? prop.EvaluatedValue : this.Project.GetPropertyValue(name);
         }
 
