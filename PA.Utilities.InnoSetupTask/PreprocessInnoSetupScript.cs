@@ -107,6 +107,8 @@ namespace PA.Utilities.InnoSetupTask
                 return null;
             };
 
+			logger.LogInfo("Configuration is " + Configuration);
+
             var s = new SolutionProcessor(SolutionPath);
             var p = (Configuration != null && Platform != null) ? new ProjectProcessor(ProjectPath, Configuration, Platform) : new ProjectProcessor(ProjectPath);
 
