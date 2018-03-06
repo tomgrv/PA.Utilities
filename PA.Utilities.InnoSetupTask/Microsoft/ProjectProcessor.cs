@@ -33,14 +33,10 @@ namespace PA.Utilities.InnoSetupTask.Microsoft
             this.Project.SetProperty("Configuration", config);
             this.Project.SetProperty("Platform", platform);
 
-            try
-            {
+          
                 this.Project.ReevaluateIfNecessary();
-            }
-            catch (Exception e)
-            {
-
-            }
+            
+          
         }
 
         public ProjectProcessor(string path)
@@ -63,14 +59,9 @@ namespace PA.Utilities.InnoSetupTask.Microsoft
             this.Project.SetProperty("Configuration", config);
             this.Project.SetProperty("Platform", platform);
 
-            try
-            {
+           
                 this.Project.ReevaluateIfNecessary();
-            }
-            catch (Exception e)
-            {
-
-            }
+            
         }
 
         public void Init()
@@ -115,14 +106,21 @@ namespace PA.Utilities.InnoSetupTask.Microsoft
         {
 			l?.LogInfo("Fetch " + name + " property...");
 
-			foreach (var p in this.Project?.AllEvaluatedProperties)
-			{
-				l?.LogInfo(p.Name + " = " + p.EvaluatedValue);
-			}
+
 
 			foreach (var p in this.Project?.AllEvaluatedProperties)
 			{
-				l?.LogInfo(p.Name + " = " + p.EvaluatedValue);
+				l?.LogInfo("EP: "+ p.Name + " = " + p.EvaluatedValue);
+			}
+
+			foreach (var p in this.Project?.GlobalProperties)
+			{
+				l?.LogInfo("GP: "+p.Key + " = " + p.Value);
+			}
+
+			foreach (var p in this.Project?.ConditionedProperties)
+			{
+				l?.LogInfo("CP: " + p.Key + " = " + p.Value.Aggregate((a,b)=> a+";"+b));
 			}
 
 			var prop = this.Project?.AllEvaluatedProperties?.FirstOrDefault(p => p.Name.ToLower() == name.ToLower());
