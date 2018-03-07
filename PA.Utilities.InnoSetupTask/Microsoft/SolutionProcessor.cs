@@ -14,11 +14,11 @@ using Microsoft.Build.Construction;
 
 namespace PA.Utilities.InnoSetupTask.Microsoft
 {
-    public class SolutionProcessor
+    internal class SolutionProcessor
     {
         internal Solution Solution { get; private set; }
 
-        public SolutionProcessor(string solution)
+        internal SolutionProcessor(string solution)
         {
             this.Solution = new Solution(solution);
         }
