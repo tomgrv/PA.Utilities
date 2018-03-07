@@ -7,7 +7,7 @@
 	</PropertyGroup>
 	<ItemGroup>
 		<InnoSetupScripts Include="$(ProjectDir)*.iss" />
-		<InnoSetupExtraCode Include="$(ThisPackageDirectory)**\*.iss" />
+		<InnoSetupExtraCode Include="$(ThisPackageDirectory)\**\*.iss" />
 	</ItemGroup>
 	<UsingTask TaskName="PreprocessInnoSetupScript" AssemblyFile="$(ThisPackageDirectory)\lib\net45\PA.Utilities.InnoSetupTask.dll" />
 	<UsingTask TaskName="HandleAssemblyResolve" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll">
