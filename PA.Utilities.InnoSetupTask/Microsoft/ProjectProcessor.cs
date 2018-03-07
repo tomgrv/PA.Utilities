@@ -28,6 +28,8 @@ namespace PA.Utilities.InnoSetupTask.Microsoft
 		{
 			this.Project = project;
 			this.Logger = logger;
+
+			logger?.LogInfo("Getting project " + this.Project.ToString() + "\n" + this.Project.SkipEvaluation);
 		}
 
 		internal ProjectProcessor(Project project, string config, string platform, TaskLogger logger = null) 
