@@ -68,7 +68,7 @@ namespace PA.Utilities.InnoSetupTask
             }
             catch (Exception exception)
             {
-                logger.LogError("Error occurred: " + exception + "\n" + exception.StackTrace);
+				logger.LogError("Error occurred: " + exception );
                 return false;
             }
             finally
@@ -107,8 +107,11 @@ namespace PA.Utilities.InnoSetupTask
                 return null;
             };
 
-            var s = new SolutionProcessor(SolutionPath);
-            var p = (Configuration != null && Platform != null) ? new ProjectProcessor(ProjectPath, Configuration, Platform) : new ProjectProcessor(ProjectPath);
+			logger.LogInfo("Configuration is " + Configuration);
+			logger.LogInfo("Platform is " + Platform);
+
+			var s = new SolutionProcessor(SolutionPath, Configuration, Platform, logger);
+			var p = s.GetProject(ProjectPath);
 
             var targets = new List<ITaskItem>();
 
@@ -122,7 +125,7 @@ namespace PA.Utilities.InnoSetupTask
 
                 File.Copy(scriptsrc, scriptdst, true);
 
-                var t = p.GetProjectTarget();
+				var t =  p.GetProjectProperty("TargetPath", logger);
 
                 var a = Assembly.ReflectionOnlyLoadFrom(t);
 
@@ -145,6 +148,12 @@ namespace PA.Utilities.InnoSetupTask
                     if (this.IncludeCodeSnippets)
                     {
                         logger.LogInfo("Update [Code] section...");
+
+						foreach (var f in this.ExtraCode)
+                    	{
+							logger.LogInfo("Code found at " + f.ItemSpec);
+                    	}
+
                         scriptProcessor.UpdateCode(this.ExtraCode.Select(e => new FileInfo(e.ItemSpec)).OrderBy(e => e.ToString()).ToArray());
                     }
 

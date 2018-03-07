@@ -15,6 +15,8 @@ namespace PA.Utilities
     {
         public static T ParseTo<T, U>(this U value, Type type = null)
         {
+			var log = Common.Logging.LogManager.GetLogger(typeof(ObjectExtensions));
+
             Type t = type ?? typeof(T);
 
             if (!typeof(T).GetTypeInfo().IsAssignableFrom(t.GetTypeInfo()))
@@ -36,7 +38,7 @@ namespace PA.Utilities
                 }
                 catch (Exception e)
                 {
-                    Debug.WriteLine(e.Message + "\n" + e.StackTrace);
+                    log.Debug(e.Message + "\n" + e.StackTrace);
                 }
 
 
@@ -56,7 +58,7 @@ namespace PA.Utilities
                         }
                         catch (Exception e)
                         {
-                            Debug.WriteLine(e.Message + "\n" + e.StackTrace);
+                            log.Debug(e.Message + "\n" + e.StackTrace);
                         }
                     }
                 }
@@ -76,7 +78,7 @@ namespace PA.Utilities
                         }
                         catch (Exception e)
                         {
-                            Debug.WriteLine(e.Message + "\n" + e.StackTrace);
+                            log.Debug(e.Message + "\n" + e.StackTrace);
                         }
                     }
                 }
@@ -96,7 +98,7 @@ namespace PA.Utilities
                         }
                         catch (Exception e)
                         {
-                            Debug.WriteLine(e.Message + "\n" + e.StackTrace);
+                           log.Debug(e.Message + "\n" + e.StackTrace);
                         }
                     }
                 }

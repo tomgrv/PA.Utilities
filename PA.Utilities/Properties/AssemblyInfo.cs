@@ -1,18 +1,18 @@
 ﻿using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using PA.Utilities.AssemblyMetadata;
 
-// General Information about an assembly is controlled through the following
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
+
+// Information about this assembly is defined by the following attributes. 
+// Change them to the values specific to your project.
+
 [assembly: AssemblyTitle("PA.Utilities")]
-[assembly: AssemblyDescription("Utilities for PA toolbox")]
-// Setting ComVisible to false makes the types in this assembly not visible
-// to COM components.  If you need to access a type in this assembly from
-// COM, set the ComVisible attribute to true on that type.
+[assembly: AssemblyDescription("Generic extensions for object parsing and convertion")]
+[assembly: AssemblyAuthors("thomas.gervais@gmail.com")]
 
+// The following attributes are used to specify the signing key for the assembly, 
+// if desired. See the Mono documentation for more information about signing.
 
-// The following GUID is for the ID of the typelib if this project is exposed to COM
-
-
-
+//[assembly: AssemblyDelaySign(false)]
+//[assembly: AssemblyKeyFile("")]

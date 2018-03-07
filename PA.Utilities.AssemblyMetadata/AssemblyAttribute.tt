@@ -1,0 +1,62 @@
+﻿﻿<#@ template language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Collections" #>
+<#@ import namespace="System.Reflection" #>
+<#@ import namespace="System.Linq" #>
+<#@ include file="AssemblyReferences.tt" #>
+<#@ output extension=".cs" encoding="utf-8"  #>
+
+using System;
+using System.Collections;
+using System.Collections.Generic;
+
+namespace PA.Utilities.AssemblyMetadata
+{
+<#  
+	var list = typeof(NuGet.IPackageMetadata).GetRuntimeProperties();
+
+    foreach(PropertyInfo m in list)
+    {
+    	if (Type.GetType("System.Reflection.Assembly"+m.Name+"Attribute") != null)
+    	{
+    		continue;
+    	}
+
+    	string proptype =  m.PropertyType.FullName;
+    	Type paramType = null;
+
+    	if (m.PropertyType.IsGenericType)
+    	{
+    		proptype = m.PropertyType.FullName.Substring(0,m.PropertyType.FullName.IndexOf('`'))+"<"  + m.PropertyType.GetGenericArguments().Select(a => a.FullName).Aggregate((a,b)=> a+","+b) +">";
+
+    		if(m.PropertyType.GetGenericTypeDefinition() == typeof(IEnumerable<>))
+    		{
+    			paramType =  m.PropertyType.GetGenericArguments()[0];
+    		}
+    		
+    	}
+#>
+	[AttributeUsage(AttributeTargets.Assembly)]
+	public class Assembly<#= m.Name  #>Attribute: Attribute
+	{
+		public <#= proptype #> <#=  m.Name   #> { get; private set; }
+		public Assembly<#=  m.Name #>Attribute() : this(default(<#= proptype #>)) { }
+		public Assembly<#=  m.Name #>Attribute(<#= proptype #> value) { this.<#=  m.Name #> = value; }
+<#
+			if (paramType != null)
+			{
+#>
+		public Assembly<#=  m.Name #>Attribute(params <#= paramType #>[] value) { this.<#=  m.Name #> = value; }
+<#
+			}
+#>
+	}
+
+<#  
+    }   
+#>  
+}

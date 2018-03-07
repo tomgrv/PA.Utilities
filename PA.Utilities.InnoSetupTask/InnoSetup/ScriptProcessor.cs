@@ -58,14 +58,15 @@ namespace PA.Utilities.InnoSetupTask.InnoSetup
 			this.AppDescription = this.InitKeys("VersionInfoDescription", GetAttribute<AssemblyDescriptionAttribute>(t => t.Description));
 			this.AppCompany = this.InitKeys("VersionInfoCompany", GetAttribute<AssemblyCompanyAttribute>(t => t.Company));
 			this.AppCopyright = this.InitKeys("VersionInfoCopyright", GetAttribute<AssemblyCopyrightAttribute>(t => t.Copyright));
-			this.AppInfoSemVer = this.InitKeys("VersionInfoTextVersion", GetFullSemVer(this.AppInfoVersion));
+			this.AppInfoSemVer = this.InitKeys("VersionInfoTextVersion", GetNormalizedSemVer());
 			this.AppProduct = this.InitKeys("VersionInfoProductName", GetAttribute<AssemblyProductAttribute>(t => t.Product));
 			this.OutputBaseFilename = this.InitKeys("OutputBaseFilename", "Setup_" + this.AppNamePascalCase + "." + this.AppInfoSemVer);
 		}
 
-		private string GetFullSemVer(string s)
+		private string GetNormalizedSemVer()
 		{
-			var len = s.IndexOf('.', s.IndexOf('+') > 0 ? s.IndexOf('+'): s.Length - 1);            return s.Substring(0, len);
+			var s = this.AppInfoVersion;
+			var end = s.IndexOf('+');            return s.Substring(0, end);
 		}
 
 

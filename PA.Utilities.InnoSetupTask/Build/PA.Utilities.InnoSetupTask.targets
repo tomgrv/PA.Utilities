@@ -1,15 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<PropertyGroup>
-		<ThisPackageDirectory Condition="$(ThisPackageDirectory) == '' Or $(ThisPackageDirectory) == '*Undefined*'">$(MSBuildThisFileDirectory)..\..\</ThisPackageDirectory>
+		<ThisPackageDirectory Condition="$(ThisPackageDirectory) == '' Or $(ThisPackageDirectory) == '*Undefined*'">$(MSBuildThisFileDirectory)..</ThisPackageDirectory>
 		<GetVersion Condition=" '$(GetVersion)' == '' ">false</GetVersion>
 		<InnoSetupCompilerVersion Condition="$(InnoSetupCompilerVersion) == '' Or $(InnoSetupCompilerVersion) == '*Undefined*'">5.5.9</InnoSetupCompilerVersion>
 	</PropertyGroup>
 	<ItemGroup>
 		<InnoSetupScripts Include="$(ProjectDir)*.iss" />
-		<InnoSetupExtraCode Include="$(ThisPackageDirectory)**\*.iss" />
+		<InnoSetupExtraCode Include="$(ThisPackageDirectory)\**\*.iss" />
 	</ItemGroup>
-	<UsingTask TaskName="PreprocessInnoSetupScript" AssemblyFile="$(ThisPackageDirectory)\lib\PA.Utilities.InnoSetupTask.dll" />
+	<UsingTask TaskName="PreprocessInnoSetupScript" AssemblyFile="$(ThisPackageDirectory)\lib\net45\PA.Utilities.InnoSetupTask.dll" />
 	<UsingTask TaskName="HandleAssemblyResolve" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll">
 		<ParameterGroup>
 			<SolutionPath ParameterType="System.String" Required="true" />
