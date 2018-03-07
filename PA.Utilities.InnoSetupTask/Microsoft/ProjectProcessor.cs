@@ -37,10 +37,13 @@ namespace PA.Utilities.InnoSetupTask.Microsoft
 		{
 
 
-			this.Project.SetProperty("Configuration", config);
-			this.Project.SetProperty("Platform", platform);
+          		this.Project.SetGlobalProperty("Configuration", config);
+          		this.Project.SetGlobalProperty("Platform", platform);
 
-            this.Project.ReevaluateIfNecessary();
+           	logger?.LogInfo("BR");
+
+			this.Project.ReevaluateIfNecessary();
+logger?.LogInfo("AR");
 		}
 
 		internal ProjectProcessor(string path, TaskLogger logger = null)
@@ -62,10 +65,12 @@ namespace PA.Utilities.InnoSetupTask.Microsoft
 		internal ProjectProcessor(string path, string config, string platform, TaskLogger logger = null)
 			   : this(path, logger)
 		{
-			this.Project.SetProperty("Configuration", config);
-			this.Project.SetProperty("Platform", platform);
+			this.Project.SetGlobalProperty("Configuration", config);
+          		this.Project.SetGlobalProperty("Platform", platform);
 
-			this.Project.ReevaluateIfNecessary();
+			logger?.LogInfo("BR");
+            this.Project.ReevaluateIfNecessary();
+			logger?.LogInfo("AR");
 		}
 
 		public void Init()
