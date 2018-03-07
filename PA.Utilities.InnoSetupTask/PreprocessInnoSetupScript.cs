@@ -148,6 +148,12 @@ namespace PA.Utilities.InnoSetupTask
                     if (this.IncludeCodeSnippets)
                     {
                         logger.LogInfo("Update [Code] section...");
+
+						foreach (var f in this.ExtraCode)
+                    	{
+							logger.LogInfo("Code found at " + f.ItemSpec);
+                    	}
+
                         scriptProcessor.UpdateCode(this.ExtraCode.Select(e => new FileInfo(e.ItemSpec)).OrderBy(e => e.ToString()).ToArray());
                     }
 
