@@ -36,14 +36,10 @@ namespace PA.Utilities.InnoSetupTask.Microsoft
 			: this(project, logger)
 		{
 
-
-          		this.Project.SetGlobalProperty("Configuration", config);
-          		this.Project.SetGlobalProperty("Platform", platform);
-
-           	logger?.LogInfo("BR");
+			this.Project.SetGlobalProperty("Configuration", config);
+			this.Project.SetGlobalProperty("Platform", platform);
 
 			this.Project.ReevaluateIfNecessary();
-logger?.LogInfo("AR");
 		}
 
 		internal ProjectProcessor(string path, TaskLogger logger = null)
@@ -66,10 +62,10 @@ logger?.LogInfo("AR");
 			   : this(path, logger)
 		{
 			this.Project.SetGlobalProperty("Configuration", config);
-          		this.Project.SetGlobalProperty("Platform", platform);
+			this.Project.SetGlobalProperty("Platform", platform);
 
 			logger?.LogInfo("BR");
-            this.Project.ReevaluateIfNecessary();
+			this.Project.ReevaluateIfNecessary();
 			logger?.LogInfo("AR");
 		}
 
@@ -116,7 +112,7 @@ logger?.LogInfo("AR");
 			l?.LogInfo("Fetch " + name + " property...");
 
 
-
+#if DEBUG
 			foreach (var p in this.Project?.AllEvaluatedProperties)
 			{
 				l?.LogInfo("EP: " + p.Name + " = " + p.EvaluatedValue);
@@ -131,6 +127,7 @@ logger?.LogInfo("AR");
 			{
 				l?.LogInfo("CP: " + p.Key + " = " + p.Value.Aggregate((a, b) => a + ";" + b));
 			}
+#endif
 
 			var prop = this.Project?.AllEvaluatedProperties?.FirstOrDefault(p => p.Name.ToLower() == name.ToLower());
 			return prop != null ? prop.EvaluatedValue : this.Project.GetPropertyValue(name);
