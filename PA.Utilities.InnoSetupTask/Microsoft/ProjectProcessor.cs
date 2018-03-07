@@ -29,7 +29,7 @@ namespace PA.Utilities.InnoSetupTask.Microsoft
 			this.Project = project;
 			this.Logger = logger;
 
-			logger?.LogInfo("Getting project " + this.Project.ToString() + "\n" + this.Project.SkipEvaluation);
+			logger?.LogInfo("Getting project " + this.Project.GetPropertyValue("MSBuildProjectName"));
 		}
 
 		internal ProjectProcessor(Project project, string config, string platform, TaskLogger logger = null) 
@@ -54,7 +54,7 @@ namespace PA.Utilities.InnoSetupTask.Microsoft
 
 		}
 
-			logger?.LogInfo("Loading project " + this.Project.ToString() + "\n" + this.Project.SkipEvaluation);
+			logger?.LogInfo("Loading project " + this.Project.GetPropertyValue("MSBuildProjectName"));
 	}
 
 	internal ProjectProcessor(string path, string config, string platform, TaskLogger logger = null)

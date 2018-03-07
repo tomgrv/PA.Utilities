@@ -27,7 +27,33 @@ namespace PA.Utilities.InnoSetupTask.Microsoft
             this.Logger = logger;
 
 			logger?.LogInfo("Loading solution " + this.Solution.SolutionName);
+
+			using (var pc = new ProjectCollection())
+            {
+				foreach (ProjectInSolution prj in  this.Solution.Projects.Where(p => p.ProjectType != SolutionProjectType.SolutionFolder ))
+                {
+                    var project = new ProjectProcessor(pc.LoadProject(Path.Combine( this.Solution.DirectoryName, prj.RelativePath)), logger);
+					project.Init();
+                }
+            }
         }
+
+		internal SolutionProcessor(string solution, string configuration, string platform, TaskLogger logger = null)
+		{
+			this.Solution = new Solution(solution);
+			this.Logger = logger;
+
+			logger?.LogInfo("Loading solution " + this.Solution.SolutionName);
+
+			using (var pc = new ProjectCollection())
+			{
+				foreach (ProjectInSolution prj in this.Solution.Projects.Where(p => p.ProjectType != SolutionProjectType.SolutionFolder))
+				{
+					var project = new ProjectProcessor(pc.LoadProject(Path.Combine(this.Solution.DirectoryName, prj.RelativePath)),configuration,platform,  logger);
+					project.Init();
+				}
+			}
+		}
 
         public void GetProject(string path)
         {
