@@ -19,6 +19,8 @@ namespace PA.Utilities.InnoSetupTask.Microsoft
         internal Solution Solution { get; private set; }
 		internal TaskLogger Logger { get; private set; }
 
+		internal Dictionary<string, ProjectProcessor> Projects { get; private set; }
+
 		internal SolutionProcessor(string solution, TaskLogger logger = null)
         {
 
@@ -32,8 +34,12 @@ namespace PA.Utilities.InnoSetupTask.Microsoft
             {
 				foreach (ProjectInSolution prj in  this.Solution.Projects.Where(p => p.ProjectType != SolutionProjectType.SolutionFolder ))
                 {
-                    var project = new ProjectProcessor(pc.LoadProject(Path.Combine( this.Solution.DirectoryName, prj.RelativePath)), logger);
+					var path = Path.Combine(this.Solution.DirectoryName, prj.RelativePath);
+
+					var project = new ProjectProcessor(pc.LoadProject(path), logger);
 					project.Init();
+
+					Projects.Add(path, project);
                 }
             }
         }
@@ -49,53 +55,36 @@ namespace PA.Utilities.InnoSetupTask.Microsoft
 			{
 				foreach (ProjectInSolution prj in this.Solution.Projects.Where(p => p.ProjectType != SolutionProjectType.SolutionFolder))
 				{
-					var project = new ProjectProcessor(pc.LoadProject(Path.Combine(this.Solution.DirectoryName, prj.RelativePath)),configuration,platform,  logger);
+					var path = Path.Combine(this.Solution.DirectoryName, prj.RelativePath);
+
+					var project = new ProjectProcessor(pc.LoadProject(path),configuration,platform,  logger);
 					project.Init();
+
+					Projects.Add(path, project);
 				}
 			}
 		}
 
-        public void GetProject(string path)
+        public ProjectProcessor GetProject(string path)
         {
+			path = Path.Combine(this.Solution.DirectoryName, path);
 
-        }
+			Logger?.LogInfo("Getting project at " + path);
 
-        public void Init()
-        {
-            var solution = new Solution(this.Solution.DirectoryName + Path.DirectorySeparatorChar + this.Solution.SolutionName);
-
-            using (var pc = new ProjectCollection())
-            {
-				foreach (ProjectInSolution prj in solution.Projects.Where(p => p.ProjectType != SolutionProjectType.SolutionFolder ))
-                {
-                    var project = new ProjectProcessor(pc.LoadProject(Path.Combine(solution.DirectoryName, prj.RelativePath)));
-                    project.Init();
-                }
-            }
+			return this.Projects[path];
         }
 
 
         internal IEnumerable<FileItem> GetFiles(string configuration, string platform)
         {
-            using (var pc = new ProjectCollection())
-            {
-                foreach (ProjectInSolution prj in this.Solution.Projects.Where(p => p.ProjectType != SolutionProjectType.SolutionFolder))
-                {
-                    var pp = new ProjectProcessor(pc.LoadProject(Path.Combine(this.Solution.DirectoryName, prj.RelativePath)), configuration, platform);
-
-                    Trace.TraceInformation("Processing project <" + pp.Project.FullPath + ">");
-
-                    foreach (FileItem file in pp.GetFiles(configuration, platform))
-                    {
-                        yield return file;
-                    }
-                }
+			foreach (var kvp in this.Projects)
+			{
+				foreach (FileItem file in kvp.Value.GetFiles(configuration, platform))
+				{
+					yield return file;
+				}
             }
         }
-
-
-
-
 
     }
 }

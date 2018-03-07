@@ -110,7 +110,7 @@ namespace PA.Utilities.InnoSetupTask
 			logger.LogInfo("Configuration is " + Configuration);
 			logger.LogInfo("Platform is " + Platform);
 
-            var s = new SolutionProcessor(SolutionPath, logger);
+			var s = new SolutionProcessor(SolutionPath, Configuration, Platform, logger);
 			var p = (Configuration != null && Platform != null) ? new ProjectProcessor(ProjectPath, Configuration, Platform, logger) : new ProjectProcessor(ProjectPath, logger);
 
             var targets = new List<ITaskItem>();
