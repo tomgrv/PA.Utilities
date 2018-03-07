@@ -17,10 +17,16 @@ namespace PA.Utilities.InnoSetupTask.Microsoft
     internal class SolutionProcessor
     {
         internal Solution Solution { get; private set; }
+		internal TaskLogger Logger { get; private set; }
 
-        internal SolutionProcessor(string solution)
+		internal SolutionProcessor(string solution, TaskLogger logger = null)
         {
+
+
             this.Solution = new Solution(solution);
+            this.Logger = logger;
+
+			logger?.LogInfo("Loading solution " + this.Solution.SolutionName);
         }
 
         public void GetProject(string path)
