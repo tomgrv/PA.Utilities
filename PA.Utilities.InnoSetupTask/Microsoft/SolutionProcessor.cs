@@ -43,7 +43,7 @@ namespace PA.Utilities.InnoSetupTask.Microsoft
 			this.Solution = new Solution(solution);
 			this.Logger = logger;
 
-			logger?.LogInfo("Loading solution " + this.Solution.SolutionName);
+			logger?.LogInfo("Loading solution " + this.Solution.SolutionName + " - "+configuration+"/"+platform);
 
 			using (var pc = new ProjectCollection())
 			{
