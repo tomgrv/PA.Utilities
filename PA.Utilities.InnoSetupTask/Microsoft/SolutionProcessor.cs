@@ -19,7 +19,7 @@ namespace PA.Utilities.InnoSetupTask.Microsoft
         internal Solution Solution { get; private set; }
 		internal TaskLogger Logger { get; private set; }
 
-		internal Dictionary<string, ProjectProcessor> Projects { get; private set; }
+		internal Dictionary<string, ProjectProcessor> Projects { get; private set; } = new Dictionary<string, ProjectProcessor>();
 
 		internal SolutionProcessor(string solution, TaskLogger logger = null)
         {
