@@ -28,6 +28,16 @@
     <Optimize>true</Optimize>
     <OutputPath>bin\Release</OutputPath>
     <WarningLevel>4</WarningLevel>
+    <CustomCommands>
+      <CustomCommands>
+        <Command>
+          <type>AfterBuild</type>
+          <command>"%systemroot%\system32\xcopy.exe" /y  "${TargetDir}\*.nupkg" "${SolutionDir}"</command>
+          <workingdir>${SolutionDir}</workingdir>
+          <externalConsole>True</externalConsole>
+        </Command>
+      </CustomCommands>
+    </CustomCommands>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
