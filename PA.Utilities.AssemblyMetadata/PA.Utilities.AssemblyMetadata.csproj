@@ -12,9 +12,10 @@
 	<!-- <ReleaseVersion>5</ReleaseVersion> -->
     <PackageId>PA.Utilities.AssemblyMetadata</PackageId>
     <ReleaseVersion>5</ReleaseVersion>
-    <PackOnBuild>true</PackOnBuild>
     <Authors>thomas.gervais@gmail.com</Authors>
     <Description>Assembly Metadata for nuget creation</Description>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\PA.Utilities.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>

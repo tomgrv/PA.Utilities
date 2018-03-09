@@ -13,6 +13,8 @@
     <DevelopmentDependency>true</DevelopmentDependency>
     <PackageId>PA.Utilities.InnoSetupTask</PackageId>
     <PackOnBuild>true</PackOnBuild>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\PA.Utilities.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
