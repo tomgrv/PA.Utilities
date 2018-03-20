@@ -13,6 +13,8 @@
     <DevelopmentDependency>true</DevelopmentDependency>
     <PackageId>PA.Utilities.InnoSetupTask</PackageId>
     <PackOnBuild>true</PackOnBuild>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\PA.Utilities.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -138,7 +140,7 @@
   <Import Project="..\packages\GitVersionTask.4.0.0-beta0012\build\GitVersionTask.targets" Condition="Exists('..\packages\GitVersionTask.4.0.0-beta0012\build\GitVersionTask.targets')" />
   <Import Project="..\packages\MSBuildTasks.1.5.0.235\build\MSBuildTasks.targets" Condition="Exists('..\packages\MSBuildTasks.1.5.0.235\build\MSBuildTasks.targets')" />
   
-  <Import Project="..\PA.Utilities.AssemblyMetadata\AssemblyMetadata.targets" />
+  <Import Project="..\PA.Utilities.AssemblyMetadata\build\AssemblyMetadata.targets" />
   
   <Import Project="..\packages\NuGet.Build.Packaging.0.2.2\build\NuGet.Build.Packaging.targets" Condition="Exists('..\packages\NuGet.Build.Packaging.0.2.2\build\NuGet.Build.Packaging.targets')" />
  </Project>

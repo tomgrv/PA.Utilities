@@ -7,7 +7,7 @@
 <#@ import namespace="System.Collections" #>
 <#@ import namespace="System.Reflection" #>
 <#@ import namespace="System.Linq" #>
-<#@ include file="AssemblyReferences.tt" #>
+<#@ include file="../AssemblyReferences.tt" #>
 <#@ output extension=".targets" encoding="utf-8" #>
 <#  
 	var list = new List<string>(typeof(NuGet.IPackageMetadata).GetRuntimeProperties().Select(m=> m.Name));
@@ -41,6 +41,7 @@
 		<Message Importance="Normal" Text="Parsing $(CurrentAssemblyMetadataFile)" />
 
 		<PropertyGroup>
+			<PackageVersion Condition=" '$(PackageVersion)' == '' ">$(FullSemVer)</PackageVersion>
 			<AssemblyMetadata>$([System.IO.File]::ReadAllText($(CurrentAssemblyMetadataFile)))</AssemblyMetadata>
 <#
     foreach(string propName in list)
@@ -53,6 +54,7 @@
 		</PropertyGroup>
 
 		<Message Importance="Normal" Text="Version:  $(Version)" />
+		<Message Importance="Normal" Text="PackageVersion:  $(PackageVersion)" />
 <#
     foreach(string propName in list)
     {
