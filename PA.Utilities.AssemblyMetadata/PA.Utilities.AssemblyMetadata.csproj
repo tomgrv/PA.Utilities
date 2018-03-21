@@ -12,9 +12,8 @@
 	<!-- <ReleaseVersion>5</ReleaseVersion> -->
     <PackageId>PA.Utilities.AssemblyMetadata</PackageId>
     <ReleaseVersion>5</ReleaseVersion>
-    <PackOnBuild>true</PackOnBuild>
-    <Authors>thomas.gervais@gmail.com</Authors>
-    <Description>Assembly Metadata for nuget creation</Description>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\PA.Utilities.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -24,10 +23,20 @@
     <DefineConstants>DEBUG;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CustomCommands>
+      <CustomCommands>
+        <Command>
+          <type>AfterBuild</type>
+          <command>msbuild /t:pack</command>
+          <workingdir>${ProjectDir}</workingdir>
+        </Command>
+      </CustomCommands>
+    </CustomCommands>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Optimize>true</Optimize>
     <OutputPath>bin\Release</OutputPath>
+    <DefineConstants></DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CustomCommands>
@@ -35,7 +44,7 @@
         <Command>
           <type>AfterBuild</type>
           <command>"%systemroot%\system32\xcopy.exe" /y  "${TargetDir}\*.nupkg" "${SolutionDir}"</command>
-          <workingdir>${SolutionDir}</workingdir>
+          <workingdir>${ProjectDir}</workingdir>
           <externalConsole>True</externalConsole>
         </Command>
       </CustomCommands>
@@ -56,14 +65,14 @@
       <LastGenOutput>AssemblyAttribute.cs</LastGenOutput>
     </None>
     <None Include="packages.config" />
-    <None Include="AssemblyMetadata.tt">
+    <None Include="AssemblyReferences.tt" />
+    <None Include="Build\AssemblyMetadata.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>AssemblyMetadata.targets</LastGenOutput>
     </None>
-    <None Include="AssemblyMetadata.targets">
+    <None Include="Build\AssemblyMetadata.targets">
       <DependentUpon>AssemblyMetadata.tt</DependentUpon>
     </None>
-    <None Include="AssemblyReferences.tt" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="NuGet.Core">
@@ -74,6 +83,9 @@
     <Reference Include="Microsoft.Web.XmlTransform">
       <HintPath>..\packages\Microsoft.Web.Xdt.2.1.2\lib\net40\Microsoft.Web.XmlTransform.dll</HintPath>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Build\" />
   </ItemGroup>
     <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
     <Import Project="..\packages\AssemblyReferencesTT.1.0.12\build\AssemblyReferencesTT.targets" Condition="Exists('..\packages\AssemblyReferencesTT.1.0.12\build\AssemblyReferencesTT.targets')" />
