@@ -70,9 +70,9 @@
     </None>
     <None Include="packages.config" />
     <None Include="AssemblyReferences.tt" />
-    <None Include="Build\AssemblyMetadata.tt">
+    <None Include="Build\PA.Utilities.AssemblyMetadata.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>AssemblyMetadata.targets</LastGenOutput>
+      <LastGenOutput>PA.Utilities.AssemblyMetadata.targets</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -89,8 +89,8 @@
     <Folder Include="Build\" />
   </ItemGroup>
   <ItemGroup>
-    <PackageFile Include="Build\AssemblyMetadata.targets">
-      <DependentUpon>AssemblyMetadata.tt</DependentUpon>
+    <PackageFile Include="Build\PA.Utilities.AssemblyMetadata.targets">
+      <DependentUpon>PA.Utilities.AssemblyMetadata.tt</DependentUpon>
     </PackageFile>
   </ItemGroup>
     <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
