@@ -41,17 +41,31 @@
 		<Message Importance="Normal" Text="Parsing $(CurrentAssemblyMetadataFile)" />
 
 		<PropertyGroup>
-			<PackageVersion Condition=" '$(PackageVersion)' == '' ">$(FullSemVer)</PackageVersion>
+
 			<AssemblyMetadata>$([System.IO.File]::ReadAllText($(CurrentAssemblyMetadataFile)))</AssemblyMetadata>
 <#
     foreach(string propName in list)
     {
 #>
-			<<#= propName  #>>$([System.Text.RegularExpressions.Regex]::Match($(AssemblyMetadata), $(Assembly<#= propName #>Pattern), System.Text.RegularExpressions.RegexOptions.Multiline).Groups[1].Value)</<#= propName #>>
+			<AssemblyMetadata<#= propName  #>Value>$([System.Text.RegularExpressions.Regex]::Match($(AssemblyMetadata), $(Assembly<#= propName #>Pattern), System.Text.RegularExpressions.RegexOptions.Multiline).Groups[1].Value)</AssemblyMetadata<#= propName  #>Value>
 <#
 	}
 #>
 		</PropertyGroup>
+
+
+		<PropertyGroup>
+			<PackageVersion Condition=" '$(PackageVersion)' == '' ">$(FullSemVer)</PackageVersion>
+<#
+    foreach(string propName in list)
+    {
+#>
+			<<#= propName  #> Condition=" '$(<#= propName  #>)' == '' ">$(AssemblyMetadata<#= propName  #>Value)</<#= propName #>>
+<#
+	}
+#>
+		</PropertyGroup>
+
 
 		<Message Importance="Normal" Text="Version:  $(Version)" />
 		<Message Importance="Normal" Text="PackageVersion:  $(PackageVersion)" />

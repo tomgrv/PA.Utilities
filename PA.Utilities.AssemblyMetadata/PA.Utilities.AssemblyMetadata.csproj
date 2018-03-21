@@ -74,6 +74,9 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>PA.Utilities.AssemblyMetadata.targets</LastGenOutput>
     </None>
+    <None Include="Build\PA.Utilities.AssemblyMetadata.targets">
+      <DependentUpon>PA.Utilities.AssemblyMetadata.tt</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="NuGet.Core">
@@ -87,11 +90,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Build\" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageFile Include="Build\PA.Utilities.AssemblyMetadata.targets">
-      <DependentUpon>PA.Utilities.AssemblyMetadata.tt</DependentUpon>
-    </PackageFile>
   </ItemGroup>
     <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
     <Import Project="..\packages\AssemblyReferencesTT.1.0.12\build\AssemblyReferencesTT.targets" Condition="Exists('..\packages\AssemblyReferencesTT.1.0.12\build\AssemblyReferencesTT.targets')" />
