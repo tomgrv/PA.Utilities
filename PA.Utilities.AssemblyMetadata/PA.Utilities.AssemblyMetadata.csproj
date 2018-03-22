@@ -14,6 +14,10 @@
     <ReleaseVersion>5</ReleaseVersion>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\PA.Utilities.snk</AssemblyOriginatorKeyFile>
+    <PackOnBuild>true</PackOnBuild>
+    <PackageVersion>0.0.0.0</PackageVersion>
+    <Authors>tomgrv</Authors>
+    <Description>PA.Utilities.AssemblyMetadata</Description>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -66,12 +70,12 @@
     </None>
     <None Include="packages.config" />
     <None Include="AssemblyReferences.tt" />
-    <None Include="Build\AssemblyMetadata.tt">
+    <None Include="Build\PA.Utilities.AssemblyMetadata.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>AssemblyMetadata.targets</LastGenOutput>
+      <LastGenOutput>PA.Utilities.AssemblyMetadata.targets</LastGenOutput>
     </None>
-    <None Include="Build\AssemblyMetadata.targets">
-      <DependentUpon>AssemblyMetadata.tt</DependentUpon>
+    <None Include="Build\PA.Utilities.AssemblyMetadata.targets">
+      <DependentUpon>PA.Utilities.AssemblyMetadata.tt</DependentUpon>
     </None>
   </ItemGroup>
   <ItemGroup>

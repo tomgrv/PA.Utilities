@@ -1,0 +1,120 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  	<ItemGroup>  
+		<AssemblyMetadataFiles Include="Properties\*.cs" />  
+	</ItemGroup>  
+
+	
+ 	<PropertyGroup>
+        <AssemblyTitlePattern>^\s*\[assembly: AssemblyTitle\(\s*"([^"]+)"</AssemblyTitlePattern>
+        <AssemblyAuthorsPattern>^\s*\[assembly: AssemblyAuthors\(\s*"([^"]+)"</AssemblyAuthorsPattern>
+        <AssemblyOwnersPattern>^\s*\[assembly: AssemblyOwners\(\s*"([^"]+)"</AssemblyOwnersPattern>
+        <AssemblyIconUrlPattern>^\s*\[assembly: AssemblyIconUrl\(\s*"([^"]+)"</AssemblyIconUrlPattern>
+        <AssemblyLicenseUrlPattern>^\s*\[assembly: AssemblyLicenseUrl\(\s*"([^"]+)"</AssemblyLicenseUrlPattern>
+        <AssemblyProjectUrlPattern>^\s*\[assembly: AssemblyProjectUrl\(\s*"([^"]+)"</AssemblyProjectUrlPattern>
+        <AssemblyRequireLicenseAcceptancePattern>^\s*\[assembly: AssemblyRequireLicenseAcceptance\(\s*"([^"]+)"</AssemblyRequireLicenseAcceptancePattern>
+        <AssemblyDevelopmentDependencyPattern>^\s*\[assembly: AssemblyDevelopmentDependency\(\s*"([^"]+)"</AssemblyDevelopmentDependencyPattern>
+        <AssemblyDescriptionPattern>^\s*\[assembly: AssemblyDescription\(\s*"([^"]+)"</AssemblyDescriptionPattern>
+        <AssemblySummaryPattern>^\s*\[assembly: AssemblySummary\(\s*"([^"]+)"</AssemblySummaryPattern>
+        <AssemblyReleaseNotesPattern>^\s*\[assembly: AssemblyReleaseNotes\(\s*"([^"]+)"</AssemblyReleaseNotesPattern>
+        <AssemblyLanguagePattern>^\s*\[assembly: AssemblyLanguage\(\s*"([^"]+)"</AssemblyLanguagePattern>
+        <AssemblyTagsPattern>^\s*\[assembly: AssemblyTags\(\s*"([^"]+)"</AssemblyTagsPattern>
+        <AssemblyCopyrightPattern>^\s*\[assembly: AssemblyCopyright\(\s*"([^"]+)"</AssemblyCopyrightPattern>
+        <AssemblyFrameworkAssembliesPattern>^\s*\[assembly: AssemblyFrameworkAssemblies\(\s*"([^"]+)"</AssemblyFrameworkAssembliesPattern>
+        <AssemblyPackageAssemblyReferencesPattern>^\s*\[assembly: AssemblyPackageAssemblyReferences\(\s*"([^"]+)"</AssemblyPackageAssemblyReferencesPattern>
+        <AssemblyDependencySetsPattern>^\s*\[assembly: AssemblyDependencySets\(\s*"([^"]+)"</AssemblyDependencySetsPattern>
+        <AssemblyMinClientVersionPattern>^\s*\[assembly: AssemblyMinClientVersion\(\s*"([^"]+)"</AssemblyMinClientVersionPattern>
+        <AssemblyProductPattern>^\s*\[assembly: AssemblyProduct\(\s*"([^"]+)"</AssemblyProductPattern>
+        <AssemblyCompanyPattern>^\s*\[assembly: AssemblyCompany\(\s*"([^"]+)"</AssemblyCompanyPattern>
+        <AssemblyTrademarkPattern>^\s*\[assembly: AssemblyTrademark\(\s*"([^"]+)"</AssemblyTrademarkPattern>
+    </PropertyGroup>
+
+  	<Target Name="ForeachAssemblyMetadataFile" BeforeTargets="CoreCompile" DependsOnTargets="UpdateAssemblyInfo"  Outputs="%(AssemblyMetadataFiles.Fullpath)">
+
+		<PropertyGroup>
+			<CurrentAssemblyMetadataFile>%(AssemblyMetadataFiles.Fullpath)</CurrentAssemblyMetadataFile>
+		</PropertyGroup>
+		
+		<Message Importance="Normal" Text="Parsing $(CurrentAssemblyMetadataFile)" />
+
+		<PropertyGroup>
+
+			<AssemblyMetadata>$([System.IO.File]::ReadAllText($(CurrentAssemblyMetadataFile)))</AssemblyMetadata>
+			<AssemblyMetadataTitleValue>$([System.Text.RegularExpressions.Regex]::Match($(AssemblyMetadata), $(AssemblyTitlePattern), System.Text.RegularExpressions.RegexOptions.Multiline).Groups[1].Value)</AssemblyMetadataTitleValue>
+			<AssemblyMetadataAuthorsValue>$([System.Text.RegularExpressions.Regex]::Match($(AssemblyMetadata), $(AssemblyAuthorsPattern), System.Text.RegularExpressions.RegexOptions.Multiline).Groups[1].Value)</AssemblyMetadataAuthorsValue>
+			<AssemblyMetadataOwnersValue>$([System.Text.RegularExpressions.Regex]::Match($(AssemblyMetadata), $(AssemblyOwnersPattern), System.Text.RegularExpressions.RegexOptions.Multiline).Groups[1].Value)</AssemblyMetadataOwnersValue>
+			<AssemblyMetadataIconUrlValue>$([System.Text.RegularExpressions.Regex]::Match($(AssemblyMetadata), $(AssemblyIconUrlPattern), System.Text.RegularExpressions.RegexOptions.Multiline).Groups[1].Value)</AssemblyMetadataIconUrlValue>
+			<AssemblyMetadataLicenseUrlValue>$([System.Text.RegularExpressions.Regex]::Match($(AssemblyMetadata), $(AssemblyLicenseUrlPattern), System.Text.RegularExpressions.RegexOptions.Multiline).Groups[1].Value)</AssemblyMetadataLicenseUrlValue>
+			<AssemblyMetadataProjectUrlValue>$([System.Text.RegularExpressions.Regex]::Match($(AssemblyMetadata), $(AssemblyProjectUrlPattern), System.Text.RegularExpressions.RegexOptions.Multiline).Groups[1].Value)</AssemblyMetadataProjectUrlValue>
+			<AssemblyMetadataRequireLicenseAcceptanceValue>$([System.Text.RegularExpressions.Regex]::Match($(AssemblyMetadata), $(AssemblyRequireLicenseAcceptancePattern), System.Text.RegularExpressions.RegexOptions.Multiline).Groups[1].Value)</AssemblyMetadataRequireLicenseAcceptanceValue>
+			<AssemblyMetadataDevelopmentDependencyValue>$([System.Text.RegularExpressions.Regex]::Match($(AssemblyMetadata), $(AssemblyDevelopmentDependencyPattern), System.Text.RegularExpressions.RegexOptions.Multiline).Groups[1].Value)</AssemblyMetadataDevelopmentDependencyValue>
+			<AssemblyMetadataDescriptionValue>$([System.Text.RegularExpressions.Regex]::Match($(AssemblyMetadata), $(AssemblyDescriptionPattern), System.Text.RegularExpressions.RegexOptions.Multiline).Groups[1].Value)</AssemblyMetadataDescriptionValue>
+			<AssemblyMetadataSummaryValue>$([System.Text.RegularExpressions.Regex]::Match($(AssemblyMetadata), $(AssemblySummaryPattern), System.Text.RegularExpressions.RegexOptions.Multiline).Groups[1].Value)</AssemblyMetadataSummaryValue>
+			<AssemblyMetadataReleaseNotesValue>$([System.Text.RegularExpressions.Regex]::Match($(AssemblyMetadata), $(AssemblyReleaseNotesPattern), System.Text.RegularExpressions.RegexOptions.Multiline).Groups[1].Value)</AssemblyMetadataReleaseNotesValue>
+			<AssemblyMetadataLanguageValue>$([System.Text.RegularExpressions.Regex]::Match($(AssemblyMetadata), $(AssemblyLanguagePattern), System.Text.RegularExpressions.RegexOptions.Multiline).Groups[1].Value)</AssemblyMetadataLanguageValue>
+			<AssemblyMetadataTagsValue>$([System.Text.RegularExpressions.Regex]::Match($(AssemblyMetadata), $(AssemblyTagsPattern), System.Text.RegularExpressions.RegexOptions.Multiline).Groups[1].Value)</AssemblyMetadataTagsValue>
+			<AssemblyMetadataCopyrightValue>$([System.Text.RegularExpressions.Regex]::Match($(AssemblyMetadata), $(AssemblyCopyrightPattern), System.Text.RegularExpressions.RegexOptions.Multiline).Groups[1].Value)</AssemblyMetadataCopyrightValue>
+			<AssemblyMetadataFrameworkAssembliesValue>$([System.Text.RegularExpressions.Regex]::Match($(AssemblyMetadata), $(AssemblyFrameworkAssembliesPattern), System.Text.RegularExpressions.RegexOptions.Multiline).Groups[1].Value)</AssemblyMetadataFrameworkAssembliesValue>
+			<AssemblyMetadataPackageAssemblyReferencesValue>$([System.Text.RegularExpressions.Regex]::Match($(AssemblyMetadata), $(AssemblyPackageAssemblyReferencesPattern), System.Text.RegularExpressions.RegexOptions.Multiline).Groups[1].Value)</AssemblyMetadataPackageAssemblyReferencesValue>
+			<AssemblyMetadataDependencySetsValue>$([System.Text.RegularExpressions.Regex]::Match($(AssemblyMetadata), $(AssemblyDependencySetsPattern), System.Text.RegularExpressions.RegexOptions.Multiline).Groups[1].Value)</AssemblyMetadataDependencySetsValue>
+			<AssemblyMetadataMinClientVersionValue>$([System.Text.RegularExpressions.Regex]::Match($(AssemblyMetadata), $(AssemblyMinClientVersionPattern), System.Text.RegularExpressions.RegexOptions.Multiline).Groups[1].Value)</AssemblyMetadataMinClientVersionValue>
+			<AssemblyMetadataProductValue>$([System.Text.RegularExpressions.Regex]::Match($(AssemblyMetadata), $(AssemblyProductPattern), System.Text.RegularExpressions.RegexOptions.Multiline).Groups[1].Value)</AssemblyMetadataProductValue>
+			<AssemblyMetadataCompanyValue>$([System.Text.RegularExpressions.Regex]::Match($(AssemblyMetadata), $(AssemblyCompanyPattern), System.Text.RegularExpressions.RegexOptions.Multiline).Groups[1].Value)</AssemblyMetadataCompanyValue>
+			<AssemblyMetadataTrademarkValue>$([System.Text.RegularExpressions.Regex]::Match($(AssemblyMetadata), $(AssemblyTrademarkPattern), System.Text.RegularExpressions.RegexOptions.Multiline).Groups[1].Value)</AssemblyMetadataTrademarkValue>
+		</PropertyGroup>
+
+
+		<PropertyGroup>
+			<PackageVersion Condition=" '$(PackageVersion)' == '' ">$(FullSemVer)</PackageVersion>
+			<Title Condition=" '$(Title)' == '' ">$(AssemblyMetadataTitleValue)</Title>
+			<Authors Condition=" '$(Authors)' == '' ">$(AssemblyMetadataAuthorsValue)</Authors>
+			<Owners Condition=" '$(Owners)' == '' ">$(AssemblyMetadataOwnersValue)</Owners>
+			<IconUrl Condition=" '$(IconUrl)' == '' ">$(AssemblyMetadataIconUrlValue)</IconUrl>
+			<LicenseUrl Condition=" '$(LicenseUrl)' == '' ">$(AssemblyMetadataLicenseUrlValue)</LicenseUrl>
+			<ProjectUrl Condition=" '$(ProjectUrl)' == '' ">$(AssemblyMetadataProjectUrlValue)</ProjectUrl>
+			<RequireLicenseAcceptance Condition=" '$(RequireLicenseAcceptance)' == '' ">$(AssemblyMetadataRequireLicenseAcceptanceValue)</RequireLicenseAcceptance>
+			<DevelopmentDependency Condition=" '$(DevelopmentDependency)' == '' ">$(AssemblyMetadataDevelopmentDependencyValue)</DevelopmentDependency>
+			<Description Condition=" '$(Description)' == '' ">$(AssemblyMetadataDescriptionValue)</Description>
+			<Summary Condition=" '$(Summary)' == '' ">$(AssemblyMetadataSummaryValue)</Summary>
+			<ReleaseNotes Condition=" '$(ReleaseNotes)' == '' ">$(AssemblyMetadataReleaseNotesValue)</ReleaseNotes>
+			<Language Condition=" '$(Language)' == '' ">$(AssemblyMetadataLanguageValue)</Language>
+			<Tags Condition=" '$(Tags)' == '' ">$(AssemblyMetadataTagsValue)</Tags>
+			<Copyright Condition=" '$(Copyright)' == '' ">$(AssemblyMetadataCopyrightValue)</Copyright>
+			<FrameworkAssemblies Condition=" '$(FrameworkAssemblies)' == '' ">$(AssemblyMetadataFrameworkAssembliesValue)</FrameworkAssemblies>
+			<PackageAssemblyReferences Condition=" '$(PackageAssemblyReferences)' == '' ">$(AssemblyMetadataPackageAssemblyReferencesValue)</PackageAssemblyReferences>
+			<DependencySets Condition=" '$(DependencySets)' == '' ">$(AssemblyMetadataDependencySetsValue)</DependencySets>
+			<MinClientVersion Condition=" '$(MinClientVersion)' == '' ">$(AssemblyMetadataMinClientVersionValue)</MinClientVersion>
+			<Product Condition=" '$(Product)' == '' ">$(AssemblyMetadataProductValue)</Product>
+			<Company Condition=" '$(Company)' == '' ">$(AssemblyMetadataCompanyValue)</Company>
+			<Trademark Condition=" '$(Trademark)' == '' ">$(AssemblyMetadataTrademarkValue)</Trademark>
+		</PropertyGroup>
+
+
+		<Message Importance="Normal" Text="Version:  $(Version)" />
+		<Message Importance="Normal" Text="PackageVersion:  $(PackageVersion)" />
+		<Message Importance="Normal" Text="Title:  $(Title)" />
+		<Message Importance="Normal" Text="Authors:  $(Authors)" />
+		<Message Importance="Normal" Text="Owners:  $(Owners)" />
+		<Message Importance="Normal" Text="IconUrl:  $(IconUrl)" />
+		<Message Importance="Normal" Text="LicenseUrl:  $(LicenseUrl)" />
+		<Message Importance="Normal" Text="ProjectUrl:  $(ProjectUrl)" />
+		<Message Importance="Normal" Text="RequireLicenseAcceptance:  $(RequireLicenseAcceptance)" />
+		<Message Importance="Normal" Text="DevelopmentDependency:  $(DevelopmentDependency)" />
+		<Message Importance="Normal" Text="Description:  $(Description)" />
+		<Message Importance="Normal" Text="Summary:  $(Summary)" />
+		<Message Importance="Normal" Text="ReleaseNotes:  $(ReleaseNotes)" />
+		<Message Importance="Normal" Text="Language:  $(Language)" />
+		<Message Importance="Normal" Text="Tags:  $(Tags)" />
+		<Message Importance="Normal" Text="Copyright:  $(Copyright)" />
+		<Message Importance="Normal" Text="FrameworkAssemblies:  $(FrameworkAssemblies)" />
+		<Message Importance="Normal" Text="PackageAssemblyReferences:  $(PackageAssemblyReferences)" />
+		<Message Importance="Normal" Text="DependencySets:  $(DependencySets)" />
+		<Message Importance="Normal" Text="MinClientVersion:  $(MinClientVersion)" />
+		<Message Importance="Normal" Text="Product:  $(Product)" />
+		<Message Importance="Normal" Text="Company:  $(Company)" />
+		<Message Importance="Normal" Text="Trademark:  $(Trademark)" />
+	
+  </Target>
+	
+</Project>
