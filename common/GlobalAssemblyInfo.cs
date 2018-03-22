@@ -9,6 +9,6 @@ using System.Reflection;
 
 [assembly: AssemblyCompany("PerspicApps")]
 [assembly: AssemblyProduct("PA.Utilities")]
-[assembly: AssemblyCopyright("(c) PA 2016")]
+[assembly: AssemblyCopyright("(c) PA 2016-2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

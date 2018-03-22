@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\packages\NuGet.Build.Packaging.0.2.2\build\NuGet.Build.Packaging.props" Condition="Exists('..\packages\NuGet.Build.Packaging.0.2.2\build\NuGet.Build.Packaging.props')" />
   <PropertyGroup>
@@ -24,19 +24,24 @@
     <DefineConstants>DEBUG;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile></DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
     <ConsolePause>false</ConsolePause>
-    <IntermediateOutputPath></IntermediateOutputPath>
+    <IntermediateOutputPath>
+    </IntermediateOutputPath>
     <ExternalConsole>false</ExternalConsole>
-    <Commandlineparameters></Commandlineparameters>
+    <Commandlineparameters>
+    </Commandlineparameters>
     <RunWithWarnings>true</RunWithWarnings>
-    <NoWarn></NoWarn>
+    <NoWarn>
+    </NoWarn>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
     <LangVersion>Default</LangVersion>
     <NoStdLib>false</NoStdLib>
     <PlatformTarget>anycpu</PlatformTarget>
-    <WarningsNotAsErrors></WarningsNotAsErrors>
+    <WarningsNotAsErrors>
+    </WarningsNotAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Optimize>true</Optimize>
@@ -57,6 +62,9 @@
     </CustomCommands>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Web.XmlTransform, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Web.Xdt.2.1.2\lib\net40\Microsoft.Web.XmlTransform.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
@@ -82,9 +90,6 @@
     <Reference Include="Microsoft.Build.Tasks.Core">
       <HintPath>..\packages\Microsoft.Build.Tasks.Core.14.3.0\lib\net45\Microsoft.Build.Tasks.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Web.XmlTransform">
-      <HintPath>..\packages\Microsoft.Web.Xdt.2.1.1\lib\net40\Microsoft.Web.XmlTransform.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -105,16 +110,10 @@
     <Compile Include="InnoSetup\DataParser.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Build\" />
-    <Folder Include="Nuget.Common\" />
-    <Folder Include="Utils\" />
-    <Folder Include="Microsoft\" />
-    <Folder Include="InnoSetup\" />
-    <Folder Include="Scripts\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\PA.Utilities\PA.Utilities.csproj">
       <Project>{F2C9256B-A6C1-4FAF-8DF0-3A15092F50B7}</Project>
@@ -130,18 +129,13 @@
   <ItemGroup>
     <Content Include="Scripts\2_code.iss" />
     <Content Include="Scripts\1_dotnet.iss" />
-	
     <Content Include="Build\PA.Utilities.InnoSetupTask.targets">
-	<PackagePath>build\PA.Utilities.InnoSetupTask.targets</PackagePath>
-	</Content>
+      <PackagePath>build\PA.Utilities.InnoSetupTask.targets</PackagePath>
+    </Content>
   </ItemGroup>
-  
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\GitVersionTask.4.0.0-beta0012\build\GitVersionTask.targets" Condition="Exists('..\packages\GitVersionTask.4.0.0-beta0012\build\GitVersionTask.targets')" />
   <Import Project="..\packages\MSBuildTasks.1.5.0.235\build\MSBuildTasks.targets" Condition="Exists('..\packages\MSBuildTasks.1.5.0.235\build\MSBuildTasks.targets')" />
-  
   <Import Project="..\PA.Utilities.AssemblyMetadata\build\AssemblyMetadata.targets" />
-  
   <Import Project="..\packages\NuGet.Build.Packaging.0.2.2\build\NuGet.Build.Packaging.targets" Condition="Exists('..\packages\NuGet.Build.Packaging.0.2.2\build\NuGet.Build.Packaging.targets')" />
- </Project>
- 
+</Project>
