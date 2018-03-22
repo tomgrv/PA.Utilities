@@ -8,7 +8,7 @@ using PA.Utilities.AssemblyMetadata;
 // associées à un assembly.
 [assembly: AssemblyTitle("PA.Utilities.InnoSetupTask")]
 [assembly: AssemblyDescription("Build innosetup iss file with project details")]
-[assembly: AssemblyAuthors("thomas.gervais@gmail.com")]
+[assembly: AssemblyAuthors("tomgrv")]
 
 // L'affectation de la valeur false à ComVisible rend les types invisibles dans cet assembly 
 // aux composants COM. Si vous devez accéder à un type dans cet assembly à partir de 
