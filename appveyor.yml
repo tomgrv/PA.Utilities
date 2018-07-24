@@ -29,7 +29,7 @@ artifacts:
 
 deploy:
 - provider: Environment
-  name: nuget.org
+  name: NuGet
   on:
     branch: master
 - provider: Environment
