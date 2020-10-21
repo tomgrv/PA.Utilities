@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<ThisPackageDirectory Condition="$(ThisPackageDirectory) == '' Or $(ThisPackageDirectory) == '*Undefined*'">$(MSBuildThisFileDirectory)..</ThisPackageDirectory>
 		<GetVersion Condition=" '$(GetVersion)' == '' ">false</GetVersion>
-		<InnoSetupCompilerVersion Condition="$(InnoSetupCompilerVersion) == '' Or $(InnoSetupCompilerVersion) == '*Undefined*'">5.5.9</InnoSetupCompilerVersion>
+		<InnoSetupCompilerVersion Condition="$(InnoSetupCompilerVersion) == '' Or $(InnoSetupCompilerVersion) == '*Undefined*'">6.0.5</InnoSetupCompilerVersion>
 	</PropertyGroup>
 	<ItemGroup>
 		<InnoSetupScripts Include="$(ProjectDir)*.iss" />
