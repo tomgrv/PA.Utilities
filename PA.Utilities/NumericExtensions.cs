@@ -1,4 +1,4 @@
-﻿﻿
+﻿
 
 
 using System;
@@ -30,8 +30,8 @@ namespace PA.Utilities
             { // use relative error
                 return diff / Math.Min(absA + absB, float.MaxValue) < float.Epsilon;
             }
-        } 
- 
+        }
+
         public static bool NearlyEquals(this double a, double b)
         {
 
@@ -53,8 +53,8 @@ namespace PA.Utilities
             { // use relative error
                 return diff / Math.Min(absA + absB, double.MaxValue) < double.Epsilon;
             }
-        } 
-   
+        }
+
     }
 }
 

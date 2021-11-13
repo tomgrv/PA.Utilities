@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Express 15 for Windows Desktop
-VisualStudioVersion = 15.0.27130.2027
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31424.327
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PA.Utilities", "PA.Utilities\PA.Utilities.csproj", "{F2C9256B-A6C1-4FAF-8DF0-3A15092F50B7}"
 EndProject
@@ -23,8 +23,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PA.Utilities.AssemblyMetadata", "PA.Utilities.AssemblyMetadata\PA.Utilities.AssemblyMetadata.csproj", "{C7FBB046-F857-4213-A703-EDEB07C74182}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PA.Utilities.InnoSetupTask", "PA.Utilities.InnoSetupTask\PA.Utilities.InnoSetupTask.csproj", "{D88976E0-7A93-4974-BDA0-DABD342A72B4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PA.Utilities.IniParser", "PA.Utilities.IniParser\PA.Utilities.IniParser.csproj", "{1D2869CF-B9CF-4487-BE26-19EAE2D87CF2}"
 EndProject
@@ -77,24 +75,6 @@ Global
 		{C7FBB046-F857-4213-A703-EDEB07C74182}.Release|x64.Build.0 = Release|Any CPU
 		{C7FBB046-F857-4213-A703-EDEB07C74182}.Release|x86.ActiveCfg = Release|Any CPU
 		{C7FBB046-F857-4213-A703-EDEB07C74182}.Release|x86.Build.0 = Release|Any CPU
-		{D88976E0-7A93-4974-BDA0-DABD342A72B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D88976E0-7A93-4974-BDA0-DABD342A72B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D88976E0-7A93-4974-BDA0-DABD342A72B4}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{D88976E0-7A93-4974-BDA0-DABD342A72B4}.Debug|x64.Build.0 = Debug|Any CPU
-		{D88976E0-7A93-4974-BDA0-DABD342A72B4}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{D88976E0-7A93-4974-BDA0-DABD342A72B4}.Debug|x86.Build.0 = Debug|Any CPU
-		{D88976E0-7A93-4974-BDA0-DABD342A72B4}.Default|Any CPU.ActiveCfg = Debug|Any CPU
-		{D88976E0-7A93-4974-BDA0-DABD342A72B4}.Default|Any CPU.Build.0 = Debug|Any CPU
-		{D88976E0-7A93-4974-BDA0-DABD342A72B4}.Default|x64.ActiveCfg = Debug|Any CPU
-		{D88976E0-7A93-4974-BDA0-DABD342A72B4}.Default|x64.Build.0 = Debug|Any CPU
-		{D88976E0-7A93-4974-BDA0-DABD342A72B4}.Default|x86.ActiveCfg = Debug|Any CPU
-		{D88976E0-7A93-4974-BDA0-DABD342A72B4}.Default|x86.Build.0 = Debug|Any CPU
-		{D88976E0-7A93-4974-BDA0-DABD342A72B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D88976E0-7A93-4974-BDA0-DABD342A72B4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D88976E0-7A93-4974-BDA0-DABD342A72B4}.Release|x64.ActiveCfg = Release|Any CPU
-		{D88976E0-7A93-4974-BDA0-DABD342A72B4}.Release|x64.Build.0 = Release|Any CPU
-		{D88976E0-7A93-4974-BDA0-DABD342A72B4}.Release|x86.ActiveCfg = Release|Any CPU
-		{D88976E0-7A93-4974-BDA0-DABD342A72B4}.Release|x86.Build.0 = Release|Any CPU
 		{1D2869CF-B9CF-4487-BE26-19EAE2D87CF2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1D2869CF-B9CF-4487-BE26-19EAE2D87CF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1D2869CF-B9CF-4487-BE26-19EAE2D87CF2}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -118,11 +98,11 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		AssemblyVersionSettings = IncrementOnDemandWithReset.IncrementOnDemandWithReset.DeltaDayStamp.TimeStamp
-		UpdateAssemblyInfoVersion = False
-		UpdateAssemblyFileVersion = False
-		UpdateAssemblyVersion = True
 		SolutionGuid = {106CBC75-00CC-4C93-BA31-1F89FE15037F}
+		UpdateAssemblyVersion = True
+		UpdateAssemblyFileVersion = False
+		UpdateAssemblyInfoVersion = False
+		AssemblyVersionSettings = IncrementOnDemandWithReset.IncrementOnDemandWithReset.DeltaDayStamp.TimeStamp
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		Policies = $0

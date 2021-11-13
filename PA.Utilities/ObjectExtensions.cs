@@ -3,11 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Runtime.Serialization;
 using System.Reflection;
-using System.Diagnostics;
-using System.Runtime.InteropServices;
 
 namespace PA.Utilities
 {
@@ -15,7 +11,7 @@ namespace PA.Utilities
     {
         public static T ParseTo<T, U>(this U value, Type type = null)
         {
-			var log = Common.Logging.LogManager.GetLogger(typeof(ObjectExtensions));
+            var log = Common.Logging.LogManager.GetLogger(typeof(ObjectExtensions));
 
             Type t = type ?? typeof(T);
 
@@ -98,7 +94,7 @@ namespace PA.Utilities
                         }
                         catch (Exception e)
                         {
-                           log.Debug(e.Message + "\n" + e.StackTrace);
+                            log.Debug(e.Message + "\n" + e.StackTrace);
                         }
                     }
                 }
