@@ -2,13 +2,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31424.327
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PA.Utilities", "PA.Utilities\PA.Utilities.csproj", "{F2C9256B-A6C1-4FAF-8DF0-3A15092F50B7}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{FE201DE0-3835-49B6-AAFE-CA820E0FD1DA}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\NuGet.targets = .nuget\NuGet.targets
-	EndProjectSection
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PA.Utilities", "PA.Utilities\PA.Utilities.csproj", "{F2C9256B-A6C1-4FAF-8DF0-3A15092F50B7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Continuous Integration", "Continuous Integration", "{1223E8AA-EF72-43FE-B1CF-DBD7A9CD196B}"
 	ProjectSection(SolutionItems) = preProject
@@ -22,9 +16,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PA.Utilities.AssemblyMetadata", "PA.Utilities.AssemblyMetadata\PA.Utilities.AssemblyMetadata.csproj", "{C7FBB046-F857-4213-A703-EDEB07C74182}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PA.Utilities.AssemblyMetadata", "PA.Utilities.AssemblyMetadata\PA.Utilities.AssemblyMetadata.csproj", "{C7FBB046-F857-4213-A703-EDEB07C74182}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PA.Utilities.IniParser", "PA.Utilities.IniParser\PA.Utilities.IniParser.csproj", "{1D2869CF-B9CF-4487-BE26-19EAE2D87CF2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PA.Utilities.IniParser", "PA.Utilities.IniParser\PA.Utilities.IniParser.csproj", "{1D2869CF-B9CF-4487-BE26-19EAE2D87CF2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -98,11 +92,11 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {106CBC75-00CC-4C93-BA31-1F89FE15037F}
-		UpdateAssemblyVersion = True
-		UpdateAssemblyFileVersion = False
-		UpdateAssemblyInfoVersion = False
 		AssemblyVersionSettings = IncrementOnDemandWithReset.IncrementOnDemandWithReset.DeltaDayStamp.TimeStamp
+		UpdateAssemblyInfoVersion = False
+		UpdateAssemblyFileVersion = False
+		UpdateAssemblyVersion = True
+		SolutionGuid = {106CBC75-00CC-4C93-BA31-1F89FE15037F}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		Policies = $0
