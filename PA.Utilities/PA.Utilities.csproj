@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <Import Project="..\packages\NuGet.Build.Packaging.0.2.2\build\NuGet.Build.Packaging.props" Condition="Exists('..\packages\NuGet.Build.Packaging.0.2.2\build\NuGet.Build.Packaging.props')" />
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <OutputType>Library</OutputType>
     <ReleaseVersion>5</ReleaseVersion>
     <NeutralLanguage>en</NeutralLanguage>
@@ -53,7 +53,7 @@
       <Version>3.4.1</Version>
     </PackageReference>
     <PackageReference Include="GitVersion.MsBuild">
-      <Version>5.8.1</Version>
+      <Version>5.11.1</Version>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>

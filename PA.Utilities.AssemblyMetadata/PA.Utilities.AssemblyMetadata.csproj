@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <OutputType>Library</OutputType>
     <PackageId>PA.Utilities.AssemblyMetadata</PackageId>
     <Authors>PA.Utilities.AssemblyMetadata</Authors>
@@ -69,7 +69,7 @@
       <Version>1.0.12</Version>
     </PackageReference>
     <PackageReference Include="GitVersion.MsBuild">
-      <Version>5.8.1</Version>
+      <Version>5.11.1</Version>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
@@ -84,7 +84,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="NuGet.Packaging.Core" Version="6.0.0" />
+    <PackageReference Include="NuGet.Packaging.Core" Version="6.4.0" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="AssemblyMetadata.cs" />
