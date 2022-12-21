@@ -34,6 +34,8 @@ artifacts:
 deploy:
 - provider: Environment
   name: NuGet
+  api_key:
+    secure: i94NWZ7+nBoNrLIZl7oVmp8WAbJVD3jHWhfb7mfxuj8gZg4UMNqMoWFRXZ9ZiuPM
   on:
     branch: master
 - provider: Environment
