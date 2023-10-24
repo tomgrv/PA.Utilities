@@ -1,5 +1,0 @@
-assembly-versioning-scheme: MajorMinorPatch
-assembly-informational-format: '{NuGetVersion}'
-
-ignore:
-  sha: []
