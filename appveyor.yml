@@ -1,0 +1,40 @@
+branches:
+ # whitelist
+
+  # blacklist
+  except:
+    - gh-pages
+
+image: Visual Studio 2022
+configuration: Release
+platform: Any CPU
+
+assembly_info:
+  patch: false
+
+before_build:
+- cmd: dotnet dotnet build --configuration Release
+
+build:
+  project: PA.Utilities.sln			  # path to Visual Studio solution or project
+  include_nuget_references: true	# add -IncludeReferencedProjects option while packaging NuGet artifacts
+  verbosity: normal
+  publish_nuget: true             # package projects with .nuspec files and push to artifacts
+  publish_nuget_symbols: true     
+
+test: off
+
+artifacts:
+- path: 'PA.*.nupkg'
+
+deploy:
+- provider: Environment
+  name: NuGet
+  api_key:
+    secure: i94NWZ7+nBoNrLIZl7oVmp8WAbJVD3jHWhfb7mfxuj8gZg4UMNqMoWFRXZ9ZiuPM
+  on:
+    branch: master
+- provider: Environment
+  name: github.com
+  on:
+    branch: master
