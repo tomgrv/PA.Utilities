@@ -1,0 +1,29 @@
+name: Create Nuget Package
+
+on:
+    push:
+        branches:
+            - main
+            - develop
+            - 'release/**'
+            - 'feature/**'
+jobs:
+    build:
+        runs-on: windows-latest
+        timeout-minutes: 15
+        steps:
+        - name: Checkout
+          uses: actions/checkout@v4
+          with:
+            fetch-depth: 0
+        - name: Build
+          run: dotnet build --configuration Release
+        - name: Test
+          run: dotnet test --configuration Release --no-build
+        - name: Pack
+          run: dotnet pack --configuration Release --no-build --output .
+        - name: Save Generated packages
+          uses: actions/upload-artifact@v3
+          with:
+              name: Packages
+              path: PA.*.nupkg
