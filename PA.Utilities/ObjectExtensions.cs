@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -9,39 +10,43 @@ namespace PA.Utilities
 {
     public static class ObjectExtensions
     {
-        public static T ParseTo<T, U>(this U value, Type type = null)
+
+        public static T ParseTo<T, U>(this U value, Type? type = null)
+            where U : class
+            where T : class
         {
-            var log = Common.Logging.LogManager.GetLogger(typeof(ObjectExtensions));
+
 
             Type t = type ?? typeof(T);
 
             if (!typeof(T).GetTypeInfo().IsAssignableFrom(t.GetTypeInfo()))
             {
-                throw new InvalidCastException("Cannot cast <" + type.FullName + "> to <T>");
+                throw new InvalidCastException("Cannot cast <" + t.FullName + "> to <" + typeof(T) + ">");
             }
 
             if (t.GetTypeInfo().IsEnum)
             {
-                return (T)Enum.Parse(t, value.ToString(), true);
+                return (T)Enum.Parse(t, value.ToString() ?? string.Empty, true);
             }
             else
             {
-                T o = default(T);
+                T? o = default(T);
 
-                try
+                if (o == null)
                 {
-                    o = (T)Convert.ChangeType(value, t, CultureInfo.InvariantCulture);
+                    try
+                    {
+                        o = (T?)Convert.ChangeType(value, t, CultureInfo.InvariantCulture);
+                    }
+                    catch (Exception e)
+                    {
+                        //throw new InvalidCastException("Cannot convert <" + t.FullName + "> to <" + typeof(T) + ">", e);
+                    }
                 }
-                catch (Exception e)
+
+                if (o == null)
                 {
-                    log.Debug(e.Message + "\n" + e.StackTrace);
-                }
-
-
-
-                if ((T)o == null)
-                {
-                    ConstructorInfo ci = t.GetTypeInfo().DeclaredConstructors.FirstOrDefault(
+                    ConstructorInfo? ci = t.GetTypeInfo().DeclaredConstructors.FirstOrDefault(
                                              c => c.GetParameters().Count() == 1 &&
                                              c.GetParameters().First().ParameterType == typeof(U)
                                          );
@@ -54,14 +59,14 @@ namespace PA.Utilities
                         }
                         catch (Exception e)
                         {
-                            log.Debug(e.Message + "\n" + e.StackTrace);
+                            //throw new InvalidCastException("Cannot convert <" + t.FullName + "> to <" + typeof(T) + ">", e);
                         }
                     }
                 }
 
-                if ((T)o == null)
+                if (o == null)
                 {
-                    MethodInfo mi = t.GetTypeInfo().GetDeclaredMethods("Parse").FirstOrDefault(
+                    MethodInfo? mi = t.GetTypeInfo().GetDeclaredMethods("Parse").FirstOrDefault(
                                         m => m.GetParameters().Count() == 1 &&
                                         m.GetParameters().First().ParameterType == typeof(string)
                                     );
@@ -70,18 +75,18 @@ namespace PA.Utilities
                     {
                         try
                         {
-                            o = (T)mi.Invoke(null, new object[] { value });
+                            o = (T?)mi.Invoke(null, new object[] { value });
                         }
                         catch (Exception e)
                         {
-                            log.Debug(e.Message + "\n" + e.StackTrace);
+                            // throw new InvalidCastException("Cannot convert <" + t.FullName + "> to <" + typeof(T) + ">", e);
                         }
                     }
                 }
 
-                if ((T)o == null)
+                if (o == null)
                 {
-                    MethodInfo mi = t.GetTypeInfo().GetDeclaredMethods("CreateFrom").FirstOrDefault(
+                    MethodInfo? mi = t.GetTypeInfo().GetDeclaredMethods("CreateFrom").FirstOrDefault(
                                         m => m.GetParameters().Count() == 1 &&
                                         m.GetParameters().First().ParameterType == typeof(string)
                                     );
@@ -90,11 +95,11 @@ namespace PA.Utilities
                     {
                         try
                         {
-                            o = (T)mi.Invoke(null, new object[] { value });
+                            o = (T?)mi.Invoke(null, new object[] { value });
                         }
                         catch (Exception e)
                         {
-                            log.Debug(e.Message + "\n" + e.StackTrace);
+                            // throw new InvalidCastException("Cannot convert <" + t.FullName + "> to <" + typeof(T) + ">", e);
                         }
                     }
                 }
@@ -103,7 +108,9 @@ namespace PA.Utilities
             }
         }
 
-        public static IEnumerable<T> ParseTo<T, U>(this IEnumerable<U> value, Type type = null)
+        public static IEnumerable<T> ParseTo<T, U>(this IEnumerable<U> value, Type? type = null)
+            where U : class
+            where T : class
         {
             foreach (U v in value)
             {

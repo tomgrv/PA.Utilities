@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Security;
+using System.Security.Cryptography;
 
 namespace PA.Utilities
 {
